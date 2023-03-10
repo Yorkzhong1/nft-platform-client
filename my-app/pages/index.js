@@ -102,26 +102,6 @@ export default function Home() {
     }
   }, [walletConnected]);
 
-  const renderButton = () => {
-    // If wallet is not connected, return a button which allows them to connect their wallet
-    if (!walletConnected) {
-      return (
-        <button onClick={connectWallet} className={styles.button}>
-          Connect your wallet
-        </button>
-      );
-    }
-
-    // If we are currently waiting for something, return a loading button
-    if (loading) {
-      return <button className={styles.button}>Loading...</button>;
-    }
-
-
-
-
-
-  };
 
   return (
     <div>
@@ -147,7 +127,7 @@ export default function Home() {
                   </div>
                   <div> <h4 className="text-center">选择要Mint的NFT</h4>ShowContracts</div>
                   <div id="contactDisplay"></div>
-                  {renderButton()}
+                  
               </div>
           </div>
         </div>
