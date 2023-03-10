@@ -2,12 +2,11 @@ import { Contract, providers, utils } from "ethers";
 import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import Web3Modal from "web3modal";
-
 import styles from "../styles/Home.module.css";
-import {publicMint,getTokenIdsMinted,deploytContract} from "./contractInteract";
+// import {publicMint,getTokenIdsMinted,deploytContract} from "./contractInteract";
 // import FolderUpload from "./Upload"
-import {getContracts, FolderUpload} from "./Upload"
-import {getProviderOrSigne} from "./utils";
+// import {getContracts, FolderUpload} from "./Upload"
+// import {getProviderOrSigne} from "./utils";
 
 
 
@@ -63,31 +62,7 @@ export default function Home() {
     return web3Provider;
   };
 
-  const showContracts = ()=>{
-    
-    const names=[]
-    const adds=[]
-    contractData.forEach((item)=>{
-      names.push(item.name)
-      adds.push(item.contractAdd)
-    })
-  
 
-    if (buttonFunction==2){
-    
-     
-    return(
-      <div className="d-flex text-center">
-        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[0])}}>{names[0]}</button>
-        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[1])}}>{names[1]}</button>
-        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[2])}}>{names[2]}</button>
-        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[3])}}>{names[3]}</button>
-        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[4])}}>{names[4]}</button>
-        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[5])}}>{names[5]}</button>
-        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[6])}}>{names[6]}</button>
-      </div>
-    )}
-  }
   // useEffects are used to react to changes in state of the website
   // The array at the end of function call represents what state changes will trigger this effect
   // In this case, whenever the value of `walletConnected` changes - this effect will be called
@@ -113,10 +88,10 @@ export default function Home() {
       connectWallet();
       // eslint-disable-next-line-react-hooks/exhaustive-deps
       
-      getContracts(setContractData)  
-      let add=contractAdd1
+      // getContracts(setContractData)  
+      // let add=contractAdd1
       // console.log('contract data',contractData)
-      getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId,setLoading})
+      // getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId,setLoading})
       
       // setInterval(async function () {
       //   getContracts(setContractData) 
@@ -127,9 +102,6 @@ export default function Home() {
     }
   }, [walletConnected]);
 
-  /*
-        renderButton: Returns a button based on the state of the dapp
-      */
   const renderButton = () => {
     // If wallet is not connected, return a button which allows them to connect their wallet
     if (!walletConnected) {
@@ -145,41 +117,6 @@ export default function Home() {
       return <button className={styles.button}>Loading...</button>;
     }
 
-
-    if (buttonFunction==1){
-      return(
-          <div> 
-              <FolderUpload/>
-          </div>
-          
-      )
-    }
-
-    if (buttonFunction==2){
-      return(
-        <div className="text-center">
-          <button className={styles.button} onClick={()=>{
-            let add=contractAdd1
-            publicMint({add, setLoading})
-            getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId,setLoading})
-            }}>Public Mint 🚀</button>
-          <div className={styles.description}>已经mint了{tokenIdsMinted}/{maxTokenId}个NFT</div>
-        </div>
-      )
-    }
-
-    if (buttonFunction==3){
-      return(<div className="text-center">
-           <div className="m-5"><a href="https://testnets.opensea.io/collection/mumbai-creatures-v2"  target="_blank" role="button" aria-pressed="true"><h4>OpenSea</h4></a></div> 
-           <div className="m-5"><a href="https://blur.io/collections"  target="_blank"  role="button" aria-pressed="true"><h4>Blur</h4></a></div> 
-      </div>)
-    }
-
-    if (buttonFunction==4){
-      return(<div>使用说明</div>)
-    }
-
-   
   };
 
   return (
@@ -204,7 +141,7 @@ export default function Home() {
                   <div className="text-center">
                       <h1 className={styles.title}>欢迎来到NFT世界!</h1>
                   </div>
-                  <div> <h4 className="text-center">选择要Mint的NFT</h4>{showContracts()}</div>
+                  <div> <h4 className="text-center">选择要Mint的NFT</h4>ShowContracts</div>
                   <div id="contactDisplay"></div>
                   {renderButton()}
               </div>
