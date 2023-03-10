@@ -121,7 +121,7 @@ export default function Home() {
     if (buttonFunction==1){
       return(
           <div> 
-              <FolderUpload/>
+              {/* <FolderUpload/> */}
           </div>
           
       )
@@ -132,8 +132,8 @@ export default function Home() {
         <div className="text-center">
           <button className={styles.button} onClick={()=>{
             let add=contractAdd1
-            publicMint({add, setLoading})
-            getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId,setLoading})
+            // publicMint({add, setLoading})
+            // getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId,setLoading})
             }}>Public Mint 🚀</button>
           <div className={styles.description}>已经mint了{tokenIdsMinted}/{maxTokenId}个NFT</div>
         </div>
