@@ -3,10 +3,10 @@ import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import Web3Modal from "web3modal";
 import styles from "../styles/Home.module.css";
-import {publicMint,getTokenIdsMinted,deploytContract} from "./contractInteract";
+// import {publicMint,getTokenIdsMinted,deploytContract} from "./contractInteract";
 // import FolderUpload from "./Upload"
-import {getContracts, FolderUpload} from "./Upload"
-import {getProviderOrSigne} from "./utils";
+// import {getContracts, FolderUpload} from "./Upload"
+// import {getProviderOrSigne} from "./utils";
 
 
 
