@@ -3,6 +3,7 @@ import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import styles from "../styles/Home.module.css";
 import Web3Modal from "web3modal";
+import axios from "axios"
 // import { getProviderOrSigner } from "./utils";
 
 
