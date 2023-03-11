@@ -4,7 +4,15 @@ import React, { useEffect, useRef, useState } from "react";
 import Web3Modal from "web3modal";
 import axios from "axios"
 import styles from "../styles/Home.module.css";
-import { getProviderOrSigner } from "./utils";
+import {publicMint,getTokenIdsMinted,deploytContract} from "./backup/contractInteract";
+import {FolderUpload} from "./upload"
+import {Mint} from "./mint"
+import {getProviderOrSigner} from "./utils";
+
+import {
+  serverUrl,
+} from "../constants";
+
 
 
 export default function Home() {
@@ -13,6 +21,12 @@ export default function Home() {
   const web3ModalRef = useRef();
   const [buttonFunction, setButtonFunction] = useState(1);
   
+//contract states
+  const [tokenIdsMinted, setTokenIdsMinted] = useState("0");
+  const [maxTokenId, setMaxTokenId] = useState("0");
+  const [contractData,setContractData]=  useState([])
+  const [contractAdd1,setContractAdd1]=  useState('')
+  // const contractAdd = useRef("");
 
   const connectWallet = async () => {
     try {
@@ -42,7 +56,17 @@ export default function Home() {
     }
   }, [walletConnected]);
 
+ //these two functions will get and show data from contract data saved on server
+  
 
+  // useEffects are used to react to changes in state of the website
+  // The array at the end of function call represents what state changes will trigger this effect
+  // In this case, whenever the value of `walletConnected` changes - this effect will be called
+  
+
+  /*
+        renderButton: Returns a button based on the state of the dapp
+      */
   const renderButton = () => {
     // If wallet is not connected, return a button which allows them to connect their wallet
     if (!walletConnected) {
@@ -61,7 +85,7 @@ export default function Home() {
     if (buttonFunction==1){
       return(
           <div> 
-              FileUpload
+              <FolderUpload/>
           </div>
           
       )
@@ -70,7 +94,7 @@ export default function Home() {
     if (buttonFunction==2){
       return(
         <div> 
-            Mint
+            <Mint/>
         </div>
         
       )

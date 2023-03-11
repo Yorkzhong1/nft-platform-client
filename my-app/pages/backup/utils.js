@@ -1,5 +1,11 @@
 import { Contract, providers, utils } from "ethers";
+import Head from "next/head";
+import React, { useEffect, useRef, useState } from "react";
 import Web3Modal from "web3modal";
+import { abi, NFT_CONTRACT_ADDRESS } from "../constants";
+import styles from "../styles/Home.module.css";
+import { publicMint } from "./contractInteract";
+
 
 
 export const getProviderOrSigner = async (needSigner = false) => {
