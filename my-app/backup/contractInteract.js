@@ -7,13 +7,13 @@ import Web3Modal from "web3modal";
 
 import styles from "../styles/Home.module.css";
 import { getProviderOrSigner } from "./utils";
-import "../index"
+import "../pages/index"
 
 import {
   CONTRACT_abi,
   NFT_CONTRACT_ADDRESS,
   CONTRACT_code,
-} from "../../constants";
+} from "../constants";
 
 
 export const publicMint = async (prop) => {
