@@ -6,7 +6,7 @@ import styles from "../styles/Home.module.css";
 import axios from "axios"
 //contract related imports
 import { Contract, providers, utils,ethers } from "ethers";
-import { getProviderOrSigner } from "./utils";
+
 import "./index"
 
 import {
