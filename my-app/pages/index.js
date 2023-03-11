@@ -6,6 +6,38 @@ import styles from "../styles/Home.module.css";
 
 export default function Home() {
   const [buttonFunction, setButtonFunction] = useState(1);
+
+  const renderButton = () => {
+    
+      if (buttonFunction==1){
+        return(
+            <div> 
+                1
+            </div>
+            
+        )
+      }
+
+      if (buttonFunction==2){
+        return(
+          <div> 
+             2
+          </div>
+          
+        )
+      }
+
+      if (buttonFunction==3){
+        return(<div className="text-center">
+            <div className="m-5"><a href="https://testnets.opensea.io/collection/mumbai-creatures-v2"  target="_blank" role="button" aria-pressed="true"><h4>OpenSea</h4></a></div> 
+            <div className="m-5"><a href="https://blur.io/collections"  target="_blank"  role="button" aria-pressed="true"><h4>Blur</h4></a></div> 
+        </div>)
+      }
+
+      if (buttonFunction==4){
+        return(<div>使用说明</div>)
+      }
+    };
   return (
     <div>
       <Head>
@@ -27,7 +59,7 @@ export default function Home() {
               <div id="maindisplay" className="col-10 bg-light m-1">
                   <div className="text-center">
                       <h1 className={styles.title}>欢迎来到NFT世界!</h1>
-                      {buttonFunction}
+                      {renderButton()}
                   </div>
               </div>
           </div>
