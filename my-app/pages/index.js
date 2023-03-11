@@ -83,7 +83,7 @@ export default function Home() {
       if (buttonFunction==1){
         return(
             <div> 
-                1
+                <FolderUpload/>
             </div>
             
         )
