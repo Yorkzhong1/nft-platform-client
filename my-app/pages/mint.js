@@ -30,9 +30,6 @@ export const Mint = () => {
     await axios.get(`${serverUrl}/contracts`).then((res)=>setContractData(JSON.parse(res.data)))
   }
   
-
-
-
   return (
     <div >
         <div className="m-5 p-3 border border-dark border-1">Contracts</div>
