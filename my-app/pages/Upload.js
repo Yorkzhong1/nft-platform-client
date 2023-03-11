@@ -2,7 +2,6 @@
 import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import Web3Modal from "web3modal";
-
 import styles from "../styles/Home.module.css";
 import axios from "axios"
 
@@ -29,8 +28,6 @@ const Pinata_secret_api_key =  "479ec86c28bdf05eb13a13c86ea6029281f204b3ed3d6e55
 
 export const FolderUpload = () => {
 
-  
-  
   const selectedFiles=useRef()
   const [loading,setLoading] = useState(false);
   
@@ -47,15 +44,12 @@ export const FolderUpload = () => {
 
 //contract deploy states
 
-const symble = useRef('Punk');
-
-
+  const symble = useRef('Punk');
   const changeHandler = (event) => {
-    
     selectedFiles.current=event.target.files
   };
 
-  const dropZone = document.getElementById("drop-zone");
+
 
   const upLoadMeta = async function() {
     console.log('sending request to server')
@@ -141,7 +135,7 @@ const symble = useRef('Punk');
 
   return (
     <div >
-      <div className="m-5, p-3 border border-dark border-1">
+      <div className="m-5 p-3 border border-dark border-1">
           <h4 className="text-center">合约部署</h4>
           <div className="text-left">
               <div className="text-info">合约部署共需要三个步骤，请逐次点击按钮:</div>

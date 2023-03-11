@@ -4,16 +4,12 @@ import React, { useEffect, useRef, useState } from "react";
 import Web3Modal from "web3modal";
 import axios from "axios"
 import styles from "../styles/Home.module.css";
-
 import {publicMint,getTokenIdsMinted,deploytContract} from "./contractInteract";
-// import FolderUpload from "./Upload"
-import {FolderUpload} from "./Upload"
-import {getProviderOrSigne} from "./utils";
+import {FolderUpload} from "./upload"
+import {Mint} from "./mint"
+import {getProviderOrSigner} from "./utils";
 
 import {
-  CONTRACT_abi,
-  NFT_CONTRACT_ADDRESS,
-  CONTRACT_code,
   serverUrl,
 } from "../constants";
 
@@ -25,23 +21,15 @@ export default function Home() {
   const web3ModalRef = useRef();
   const [buttonFunction, setButtonFunction] = useState(1);
   
+//contract states
   const [tokenIdsMinted, setTokenIdsMinted] = useState("0");
   const [maxTokenId, setMaxTokenId] = useState("0");
   const [contractData,setContractData]=  useState([])
   const [contractAdd1,setContractAdd1]=  useState('')
   // const contractAdd = useRef("");
-  /**
-   * publicMint: Mint an NFT
-   */
 
-
-  /*
-        connectWallet: Connects the MetaMask wallet
-      */
   const connectWallet = async () => {
     try {
-      // Get the provider from web3Modal, which in our case is MetaMask
-      // When used for the first time, it prompts the user to connect their wallet
       await getProviderOrSigner();
       setWalletConnected(true);
     } catch (err) {
@@ -49,58 +37,6 @@ export default function Home() {
     }
   };
 
- 
-
-  const getProviderOrSigner = async (needSigner = false) => {
-    // Connect to Metamask
-    // Since we store `web3Modal` as a reference, we need to access the `current` value to get access to the underlying object
-    const provider = await web3ModalRef.current.connect();
-    const web3Provider = new providers.Web3Provider(provider);
-
-    // If user is not connected to the Mumbai network, let them know and throw an error
-    const { chainId } = await web3Provider.getNetwork();
-    if (chainId !== 1337) {
-      window.alert("Change the network to Mumbai");
-      throw new Error("Change network to Mumbai");
-    }
-
-    if (needSigner) {
-      const signer = web3Provider.getSigner();
-      return signer;
-    }
-    return web3Provider;
-  };
-
-  const downloadContracts = async ()=>{
-    console.log('download contract data from server')
-    const res = await axios.get(`${serverUrl}/contracts`)
-    console.log('contract data',res.data)
-    setContractData(JSON.parse(res.data))
-  }
-
-  const getContracts = ()=>{
-    const names=[]
-    const adds=[]
-    contractData.forEach((item)=>{
-      names.push(item.name)
-      adds.push(item.contractAdd)
-    })
-    if (buttonFunction==2){
-    return(
-      <div className="d-flex text-center">
-        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[0])}}>{names[0]}</button>
-        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[1])}}>{names[1]}</button>
-        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[2])}}>{names[2]}</button>
-        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[3])}}>{names[3]}</button>
-        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[4])}}>{names[4]}</button>
-        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[5])}}>{names[5]}</button>
-        <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[6])}}>{names[6]}</button>
-      </div>
-    )}
-  }
-  // useEffects are used to react to changes in state of the website
-  // The array at the end of function call represents what state changes will trigger this effect
-  // In this case, whenever the value of `walletConnected` changes - this effect will be called
   useEffect(() => {
     if (!walletConnected) {
       web3ModalRef.current = new Web3Modal({
@@ -108,29 +44,25 @@ export default function Home() {
         providerOptions: {},
         disableInjectedProvider: false,
       });
-
       const connectWallet = async () => {
         try {
-          // Get the provider from web3Modal, which in our case is MetaMask
-          // When used for the first time, it prompts the user to connect their wallet
           await getProviderOrSigner();
           setWalletConnected(true);
         } catch (err) {
           console.error(err);
         }
-      };
-
-      connectWallet();
-  
-      // eslint-disable-next-line-react-hooks/exhaustive-deps
-      // setInterval(async function () {
-      //   getContracts(setContractData) 
-      //   await getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId,setLoading})
-      //   await getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId});
-      // }, 5 * 1000);
-         
+      }
+      connectWallet();   
     }
   }, [walletConnected]);
+
+ //these two functions will get and show data from contract data saved on server
+  
+
+  // useEffects are used to react to changes in state of the website
+  // The array at the end of function call represents what state changes will trigger this effect
+  // In this case, whenever the value of `walletConnected` changes - this effect will be called
+  
 
   /*
         renderButton: Returns a button based on the state of the dapp
@@ -144,7 +76,6 @@ export default function Home() {
         </button>
       );
     }
-
     // If we are currently waiting for something, return a loading button
     if (loading) {
       return <button className={styles.button}>Loading...</button>;
@@ -162,22 +93,10 @@ export default function Home() {
 
     if (buttonFunction==2){
       return(
-        <div className="text-center">
-          <button className={styles.button} onClick={()=>{
-            downloadContracts()
-            
-            }}>刷新合约数据</button>
-            {getContracts()}
-           <div className="m-5"></div> 
-
-          <button className={styles.button} onClick={()=>{
-            let add=contractAdd1
-            publicMint({add, setLoading})
-            getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId,setLoading})
-            }}>Public Mint 🚀</button>
-
-          <div className={styles.description}>已经mint了{tokenIdsMinted}/{maxTokenId}个NFT</div>
+        <div> 
+            <Mint/>
         </div>
+        
       )
     }
 
@@ -217,8 +136,6 @@ export default function Home() {
                   <div className="text-center">
                       <h1 className={styles.title}>欢迎来到NFT世界!</h1>
                   </div>
-                  <div> <h4 className="text-center">选择要Mint的NFT</h4></div>
-                  <div id="contactDisplay"></div>
                   {renderButton()}
               </div>
           </div>
