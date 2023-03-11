@@ -6,6 +6,17 @@ import Web3Modal from "web3modal";
 // import { getProviderOrSigner } from "./utils";
 
 
+import {
+  CONTRACT_abi,
+  NFT_CONTRACT_ADDRESS,
+  CONTRACT_code,
+  serverUrl,
+} from "../constants";
+
+const Pinata_api_key =  "dc5bf98b2fd4875f0913"
+const Pinata_secret_api_key =  "479ec86c28bdf05eb13a13c86ea6029281f204b3ed3d6e55d372d5eff2b70044"
+
+
 export default function Home() {
   const [walletConnected, setWalletConnected] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -132,6 +143,16 @@ export default function Home() {
 
 //Mint component
 const Mint = () => {
+  const [contractData,setContractData] = useState('');
+  const [contractIndex,setContractIndex] = useState(0);
+  const changeHandler = (event) => {
+    selectedFiles.current=event.target.files
+  };
+
+  const downloadContracts=async ()=>{
+    await axios.get(`${serverUrl}/contracts`).then((res)=>setContractData(JSON.parse(res.data)))
+  }
+  
 
   return (
       <div >
