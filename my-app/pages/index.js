@@ -2,13 +2,20 @@ import { Contract, providers, utils } from "ethers";
 import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import Web3Modal from "web3modal";
-
+import axios from "axios"
 import styles from "../styles/Home.module.css";
 
 import {publicMint,getTokenIdsMinted,deploytContract} from "./contractInteract";
 // import FolderUpload from "./Upload"
-import {getContracts, FolderUpload} from "./Upload"
+import {FolderUpload} from "./Upload"
 import {getProviderOrSigne} from "./utils";
+
+import {
+  CONTRACT_abi,
+  NFT_CONTRACT_ADDRESS,
+  CONTRACT_code,
+  serverUrl,
+} from "../constants";
 
 
 
@@ -64,19 +71,21 @@ export default function Home() {
     return web3Provider;
   };
 
-  const showContracts = ()=>{
-    
+  const downloadContracts = async ()=>{
+    console.log('download contract data from server')
+    const res = await axios.get(`${serverUrl}/contracts`)
+    console.log('contract data',res.data)
+    setContractData(JSON.parse(res.data))
+  }
+
+  const getContracts = ()=>{
     const names=[]
     const adds=[]
     contractData.forEach((item)=>{
       names.push(item.name)
       adds.push(item.contractAdd)
     })
-  
-
     if (buttonFunction==2){
-    
-     
     return(
       <div className="d-flex text-center">
         <button className="btn btn-info m-3" onClick={()=>{setContractAdd1(adds[0])}}>{names[0]}</button>
@@ -112,13 +121,8 @@ export default function Home() {
       };
 
       connectWallet();
+  
       // eslint-disable-next-line-react-hooks/exhaustive-deps
-      
-      getContracts(setContractData)  
-      let add=contractAdd1
-      // console.log('contract data',contractData)
-      getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId,setLoading})
-      
       // setInterval(async function () {
       //   getContracts(setContractData) 
       //   await getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId,setLoading})
@@ -160,10 +164,18 @@ export default function Home() {
       return(
         <div className="text-center">
           <button className={styles.button} onClick={()=>{
+            downloadContracts()
+            
+            }}>刷新合约数据</button>
+            {getContracts()}
+           <div className="m-5"></div> 
+
+          <button className={styles.button} onClick={()=>{
             let add=contractAdd1
             publicMint({add, setLoading})
             getTokenIdsMinted({add,setTokenIdsMinted,setMaxTokenId,setLoading})
             }}>Public Mint 🚀</button>
+
           <div className={styles.description}>已经mint了{tokenIdsMinted}/{maxTokenId}个NFT</div>
         </div>
       )
@@ -205,7 +217,7 @@ export default function Home() {
                   <div className="text-center">
                       <h1 className={styles.title}>欢迎来到NFT世界!</h1>
                   </div>
-                  <div> <h4 className="text-center">选择要Mint的NFT</h4>{showContracts()}</div>
+                  <div> <h4 className="text-center">选择要Mint的NFT</h4></div>
                   <div id="contactDisplay"></div>
                   {renderButton()}
               </div>

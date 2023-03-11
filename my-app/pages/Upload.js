@@ -200,9 +200,3 @@ const symble = useRef('Punk');
 }
 
 
-export const getContracts = async (setContractData) => {
-  console.log('getting contracts data from server')
-  const res = await axios.get(`${serverUrl}/contracts`)
-  console.log('contract data',res.data)
-  setContractData(JSON.parse(res.data))
-};
