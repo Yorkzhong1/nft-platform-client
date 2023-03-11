@@ -12,7 +12,6 @@ import "./index"
 
 import {
   CONTRACT_abi,
-  NFT_CONTRACT_ADDRESS,
   CONTRACT_code,
   serverUrl,
 } from "../constants";
