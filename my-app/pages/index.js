@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "../styles/Home.module.css";
 import Web3Modal from "web3modal";
 // import { getProviderOrSigner } from "./utils";
-import Mint from "./mint";
+import {Mint} from "./mint"
 
 export default function Home() {
   const [walletConnected, setWalletConnected] = useState(false);
