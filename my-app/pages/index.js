@@ -1,46 +1,11 @@
 import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
-import Web3Modal from "web3modal";
 import styles from "../styles/Home.module.css";
-import { getProviderOrSigner } from "./utils";
+
 
 
 export default function Home() {
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const web3ModalRef = useRef();
   const [buttonFunction, setButtonFunction] = useState(1);
-  
-
-  const connectWallet = async () => {
-    try {
-      await getProviderOrSigner();
-      setWalletConnected(true);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
-    if (!walletConnected) {
-      web3ModalRef.current = new Web3Modal({
-        network: "mumbai",
-        providerOptions: {},
-        disableInjectedProvider: false,
-      });
-      const connectWallet = async () => {
-        try {
-          await getProviderOrSigner();
-          setWalletConnected(true);
-        } catch (err) {
-          console.error(err);
-        }
-      }
-      connectWallet();   
-    }
-  }, [walletConnected]);
-
-
   return (
     <div>
       <Head>
@@ -62,6 +27,7 @@ export default function Home() {
               <div id="maindisplay" className="col-10 bg-light m-1">
                   <div className="text-center">
                       <h1 className={styles.title}>欢迎来到NFT世界!</h1>
+                      {buttonFunction}
                   </div>
               </div>
           </div>
