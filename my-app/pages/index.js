@@ -5,7 +5,29 @@ import styles from "../styles/Home.module.css";
 
 
 export default function Home() {
+  const [walletConnected, setWalletConnected] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const web3ModalRef = useRef();
   const [buttonFunction, setButtonFunction] = useState(1);
+
+  useEffect(() => {
+    if (!walletConnected) {
+      web3ModalRef.current = new Web3Modal({
+        network: "mumbai",
+        providerOptions: {},
+        disableInjectedProvider: false,
+      });
+      const connectWallet = async () => {
+        try {
+          await getProviderOrSigner();
+          setWalletConnected(true);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+      connectWallet();   
+    }
+  }, [walletConnected]);
 
   const renderButton = () => {
     
