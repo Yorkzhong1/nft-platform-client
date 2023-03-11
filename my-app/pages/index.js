@@ -1,7 +1,9 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
+import { Contract, providers, utils } from "ethers";
+import Head from "next/head";
+import React, { useEffect, useRef, useState } from "react";
+import Web3Modal from "web3modal";
+
+import styles from "../styles/Home.module.css";
 
 const inter = Inter({ subsets: ['latin'] })
 
