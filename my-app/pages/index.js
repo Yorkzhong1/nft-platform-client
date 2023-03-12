@@ -145,20 +145,36 @@ const getProviderOrSigner = async (needSigner = false) => {
 };
 //Mint component
 const Mint = () => {
-  const [contractData,setContractData] = useState('');
+  const [contractData,setContractData] = useState([]);
+  const contractAdd= useRef("")
   const [contractIndex,setContractIndex] = useState(0);
   const changeHandler = (event) => {
     selectedFiles.current=event.target.files
   };
+  useEffect(() => {
+    
+      setInterval(()=>{
+         console.log("Hello"); 
+        }, 3000);
 
-  const downloadContracts=async ()=>{
-    await axios.get(`${serverUrl}/contracts`).then((res)=>setContractData(JSON.parse(res.data)))
+  }, []);
+
+  const getContract=async ()=>{
+    let res = await axios.get(`${serverUrl}/contracts`)
+    setContractData(JSON.parse(res.data))
+    console.log('contractData',contractData)
   }
   
 
   return (
       <div >
-          <div className="m-5 p-3 border border-dark border-1">Contracts</div>
+          <div className="m-5 p-3 border border-dark border-1">Contracts
+            <button type="button" className="btn btn-dark mt-5" onClick={getContract}>刷新合约</button>
+            <div id="contract">
+                
+                
+            </div>
+          </div>
           <div className="m-5 p-3 border border-dark border-1">Alread Minted</div>
           <div className="m-5 p-3 border border-dark border-1">Mint</div>
       </div>
