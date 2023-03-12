@@ -52,11 +52,6 @@ export default function Home() {
     }
   };
 
-
- 
-
-
-
   const renderButton = () => {
     
       if (buttonFunction==1){
@@ -143,30 +138,75 @@ const getProviderOrSigner = async (needSigner = false) => {
   }
   return web3Provider;
 };
+
+
 //Mint component
 const Mint = () => {
   const [contractData,setContractData] = useState([{name: "FakeNFT", pic: "QmWaeSpuG8Vhz9LDyYYY7Z23Rbg35dU5QLkQd8tSiSTe89/k8v12nzrjshdlqqqgrci.webp", contractAdd: "0x705bb008f6Ea39551d77d1015bD18849Efc7BfC4", myAddress: "0xAA162386d3a9B2B8F35d9f578dC27E7F4F28dB89" }])
   const [contractIndex,setContractIndex] = useState(0);
+  const [tokenIdMinted,setTokenIdsMinted]=useState(0);
+  const [maxTokenId,setMaxTokenId]=useState(0);
+
   const changeHandler = (event) => {
     selectedFiles.current=event.target.files
   };
 
+  const creatButton=(name,index)=>{
+      var btn = document.createElement("input");
+      btn.type = "button";
+      btn.style.width = "100px";
+      btn.className="btn btn-primary m-2"
+      btn.id = `${index}`;
+      btn.name = "submit";
+      btn.value = `${name}`;
+      btn.addEventListener('click', async () => {
+        setContractIndex(index)     
+        await getTokenIdsMinted(contractData[index].contractAdd)
+    })
+      document.getElementById("contract").appendChild(btn);
+    }
+
+    const getTokenIdsMinted = async (add) => {
+      try {
+        console.log('getToken contract Address',add)
+        const provider = await getProviderOrSigner();
+        const nftContract = new Contract(add, CONTRACT_abi, provider);
+        
+        await nftContract.tokenIds().then((res)=>setTokenIdsMinted(res.toString()));
+        await nftContract.maxTokenIds().then((res)=>setMaxTokenId(res.toString()));
+      
+      } catch (err) {
+        console.error(err);
+      }
+    };
 
 
-  function creatButton(name,index) {
-    var btn = document.createElement("input");
-    btn.type = "button";
-    btn.style.width = "80px";
-    btn.id = `${index}`;
-    btn.name = "submit";
-    btn.value = `${name}`;
-    btn.addEventListener('click', () => {
-      setContractIndex(index)      
-   })
-    document.getElementById("contract").appendChild(btn);
-}
+  const publicMint = async (prop) => {
+  try {
+    console.log("Public mint");
+    console.log('Mint Contract Address',prop.add)
+    // We need a Signer here since this is a 'write' transaction.
+    const signer = await getProviderOrSigner(true);
+    // Create a new instance of the Contract with a Signer, which allows
+    // update methods
+    const nftContract = new Contract(prop.add, CONTRACT_abi, signer);
+    // call the mint from the contract to mint the LW3Punks
+    const tx = await nftContract.mint({
+      // value signifies the cost of one LW3Punks which is "0.01" eth.
+      // We are parsing `0.01` string to ether using the utils library from ethers.js
+      value: utils.parseEther("0.001"),
+    });
+    prop.setLoading(true);
+    // wait for the transaction to get mined
+    await tx.wait();
+    prop.setLoading(false);
+    window.alert("你成功的mint了一个AlphaPunk!");
+  } catch (err) {
+    console.error(err);
+  }
+};
 
-  
+
 
   const getContract=async ()=>{
     let res = await axios.get(`${serverUrl}/contracts`)
@@ -197,7 +237,7 @@ const Mint = () => {
 
 //Folder upload component
 
-export const FolderUpload = () => {
+const FolderUpload = () => {
 
   const selectedFiles=useRef()
   const [loading,setLoading] = useState(false);
@@ -363,5 +403,11 @@ export const FolderUpload = () => {
     </div>
   )
 }
+
+
+
+
+
+
 
 
