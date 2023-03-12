@@ -482,7 +482,9 @@ const FolderUpload = (prop) => {
         </div>
         <button id="uploadPic" className="btn btn-danger w-100" onClick={handleSubmission}>1. 上传图片至IPFS</button>
         <button id="uploadMeta" className="btn btn-white w-100 mt-3 text-white" onClick={upLoadMeta}>2. 制作并上传MetaData</button> 
-        <button id="deployContract" className="btn btn-white w-100 mt-3 text-white" onClick={()=>{deploytContract(name,numberOfPic,symble,`ipfs://${MetaDataCID}`)}}>3.部署合约 🚀</button> 
+        <button id="deployContract" className="btn btn-white w-100 mt-3 text-white" onClick={()=>{deploytContract(`ipfs://${MetaDataCID}`,numberOfPic,name,symble)}}>3.部署合约 🚀</button> 
+        
+      
       </div>
 
       <div className="m-5"></div>
