@@ -152,10 +152,7 @@ const Mint = () => {
   };
 
   useEffect(() => {
-    setInterval(()=>{
       getContract() 
-    },3000)  
-    
   }, []);
   
   const creatButton=(name,index)=>{
@@ -223,11 +220,9 @@ const Mint = () => {
   return (
       <div >
           <div className="m-5 p-3 border border-dark border-1">
-            <button type="button" className="btn btn-dark mt-5" onClick={getContract}>合约列表</button>
-            <div id="contract">
-            </div>
+            <button type="button" className="btn btn-dark mt-5" onClick={getContract}>点击选择要Mint的NFT项目</button>
+            <div id="contract"> </div>
             <div className="m-5"><h5>{contractData[contractIndex].name}项目<br></br> 的 {tokenIdMinted}/{maxTokenId}个NFT已经被Mint</h5></div>
-            
             <button className={styles.button} onClick={publicMint}>Public Mint 🚀</button>
           </div>
           
