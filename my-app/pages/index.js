@@ -300,7 +300,7 @@ const Mint = (prop) => {
     console.log('合约数据',contractData)
     document.getElementById("contract").innerHTML=""
     for(let i=0;i<contractData.length;i++){
-      let chainName=getChainName(prop.chain)
+      let chainName=getChainName(contractData[i].chain)
       creatButton(contractData[i].name,i,chainName)
     }
   }
