@@ -145,37 +145,55 @@ const getProviderOrSigner = async (needSigner = false) => {
 };
 //Mint component
 const Mint = () => {
-  const [contractData,setContractData] = useState([])
-  const contractAdd= useRef("")
+  const [contractData,setContractData] = useState([{name: "FakeNFT", pic: "QmWaeSpuG8Vhz9LDyYYY7Z23Rbg35dU5QLkQd8tSiSTe89/k8v12nzrjshdlqqqgrci.webp", contractAdd: "0x705bb008f6Ea39551d77d1015bD18849Efc7BfC4", myAddress: "0xAA162386d3a9B2B8F35d9f578dC27E7F4F28dB89" }])
   const [contractIndex,setContractIndex] = useState(0);
   const changeHandler = (event) => {
     selectedFiles.current=event.target.files
   };
   useEffect(() => {
-      setInterval(async ()=>{
-        console.log('repeating actions in Mint')
-        let res = await axios.get(`${serverUrl}/contracts`)
-        setContractData(res.data)
-        console.log('contractData',contractData) 
-        }, 10000);
+      setInterval(()=>{
+        console.log('get contract')
+        // getContract()
+        
+        }, 100000);
 
   }, []);
 
+
+  function creatButton(name,index) {
+    var btn = document.createElement("input");
+    btn.type = "button";
+    btn.style.width = "80px";
+    btn.id = `${index}`;
+    btn.name = "submit";
+    btn.value = `${name}`;
+    btn.addEventListener('click', () => {
+      setContractIndex(index)      
+   })
+    document.getElementById("contract").appendChild(btn);
+}
+
+  
+
   const getContract=async ()=>{
     let res = await axios.get(`${serverUrl}/contracts`)
-    setContractData(res.data)
-    console.log('contractData',contractData)     
+    setContractData(JSON.parse(res.data))
+    console.log(contractData)
+    document.getElementById("contract").innerHTML=""
+    for(let i=0;i<contractData.length;i++){
+      creatButton(contractData[i].name,i)
+    }
   }
   
 
   return (
       <div >
-          <div className="m-5 p-3 border border-dark border-1">Contracts
+          <div className="m-5 p-3 border border-dark border-1">
             <button type="button" className="btn btn-dark mt-5" onClick={getContract}>刷新合约</button>
             <div id="contract">
                 
-                
             </div>
+            <div>{contractIndex}</div>
           </div>
           <div className="m-5 p-3 border border-dark border-1">Alread Minted</div>
           <div className="m-5 p-3 border border-dark border-1">Mint</div>
