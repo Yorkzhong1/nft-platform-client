@@ -145,6 +145,7 @@ const Mint = () => {
   const [contractIndex,setContractIndex] = useState(0);
   const [tokenIdMinted,setTokenIdsMinted]=useState(0);
   const [maxTokenId,setMaxTokenId]=useState(0);
+  const [loading,setLoading]=useState(false);
 
   const changeHandler = (event) => {
     selectedFiles.current=event.target.files
@@ -180,26 +181,20 @@ const Mint = () => {
     };
 
 
-  const publicMint = async (prop) => {
+  const publicMint = async () => {
   try {
     console.log("Public mint");
-    console.log('Mint Contract Address',prop.add)
-    // We need a Signer here since this is a 'write' transaction.
+    let add=contractData[contractIndex].contractAdd
+    console.log('Mint Contract Address',add)
     const signer = await getProviderOrSigner(true);
-    // Create a new instance of the Contract with a Signer, which allows
-    // update methods
-    const nftContract = new Contract(prop.add, CONTRACT_abi, signer);
-    // call the mint from the contract to mint the LW3Punks
-    const tx = await nftContract.mint({
-      // value signifies the cost of one LW3Punks which is "0.01" eth.
-      // We are parsing `0.01` string to ether using the utils library from ethers.js
-      value: utils.parseEther("0.001"),
-    });
-    prop.setLoading(true);
-    // wait for the transaction to get mined
-    await tx.wait();
-    prop.setLoading(false);
+    const nftContract = new Contract(add, CONTRACT_abi, signer);
+    const tx = await nftContract.mint({value: utils.parseEther("0.001"),});
+    setLoading(true);
+      await tx.wait();
+    setLoading(false);
     window.alert("你成功的mint了一个AlphaPunk!");
+    getTokenIdsMinted(add)
+
   } catch (err) {
     console.error(err);
   }
@@ -223,12 +218,13 @@ const Mint = () => {
           <div className="m-5 p-3 border border-dark border-1">
             <button type="button" className="btn btn-dark mt-5" onClick={getContract}>刷新合约</button>
             <div id="contract">
-                
             </div>
             <div>{contractData[contractIndex].name}项目 的 {tokenIdMinted}/{maxTokenId}个NFT已经被Mint</div>
+            <div id="Mint" className="m-5 p-3">Mint</div>
+            <button className={styles.button} onClick={publicMint}>Public Mint 🚀</button>
           </div>
-          <div className="m-5 p-3 border border-dark border-1">Alread Minted</div>
-          <div className="m-5 p-3 border border-dark border-1">Mint</div>
+          
+          
       </div>
     )
 }
