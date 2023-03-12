@@ -134,7 +134,7 @@ export default function Home() {
                         connectWallet(56)}}>BSC主网</button></li>
                     </ul>
                 </div>
-                <button className="btn btn-outline-secondary ">
+                <button className="btn btn-light ">
                   {chain==1337?
                   ('本地测试网'):(chain==80001?
                     ("Polygon测试网"):(chain==5?("以太测试网"):(chain==1?
@@ -237,10 +237,10 @@ const Mint = (prop) => {
     selectedFiles.current=event.target.files
   };
 
-  useEffect(() => {
-      getContract() 
+  // useEffect(() => {
+  //     getContract() 
       
-  }, []);
+  // }, []);
   
   const creatButton=(name,index,chainName)=>{
       var btn = document.createElement("input");
