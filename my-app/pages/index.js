@@ -31,21 +31,12 @@ export default function Home() {
         providerOptions: {},
         disableInjectedProvider: false,
       });
-      const connectWallet = async () => {
-        try {
-          await getProviderOrSigner();
-          setWalletConnected(true);
-        } catch (err) {
-          console.error(err);
-        }
-      }
-      connectWallet();   
     }
   }, [walletConnected]);
 
-  const connectWallet = async () => {
+  const connectWallet = async (chain) => {
     try {
-      await getProviderOrSigner();
+      await getProviderOrSigner(false, chain);
       setWalletConnected(true);
     } catch (err) {
       console.error(err);
@@ -53,6 +44,13 @@ export default function Home() {
   };
 
   const renderButton = () => {
+    if (!walletConnected) {
+      console.log(`请选择网络并连接钱包`)
+    }
+    // If we are currently waiting for something, return a loading button
+    if (loading) {
+      return <button className={styles.button}>Loading...</button>;
+    }
     
       if (buttonFunction==1){
         return(
@@ -89,6 +87,7 @@ export default function Home() {
         <title>AlphaPunks</title>
         <meta name="description" content="LW3Punks-Dapp" />
         <link rel="icon" href="/favicon.ico" />
+        
       </Head>
       <div className="container">
            <div className="row mt-5">
@@ -102,20 +101,99 @@ export default function Home() {
                   </div>
                 </div>
               <div id="maindisplay" className="col-10 bg-light m-1">
+              <div className="d-flex">
+                <div className="dropdown me-5">
+                    <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      连接网络
+                    </button>
+                    <ul className="dropdown-menu">
+                      <li><button className="dropdown-item" type="button" onClick={()=>{
+                        setChain(1337)
+                        connectWallet(1337)
+                        }}>本地测试网</button></li>
+                      <li><button className="dropdown-item" type="button" onClick={()=>{
+                        setChain(80001)
+                        connectWallet(80001)}}>Polygon 测试网</button></li>
+                      <li><button className="dropdown-item" type="button" onClick={()=>{
+                        setChain(5)
+                        connectWallet(5)}}>以太测试网</button></li>
+                      <li><button className="dropdown-item" type="button" onClick={()=>{
+                        setChain(1)
+                        connectWallet(1)}}>以太主网</button></li>
+                      <li><button className="dropdown-item" type="button" onClick={()=>{
+                        setChain(137)
+                        connectWallet(137)}}>Polygon主网</button></li>
+                      <li><button className="dropdown-item" type="button" onClick={()=>{
+                        setChain(42161)
+                        connectWallet(42161)}}>Arbitrum主网</button></li>
+                      <li><button className="dropdown-item" type="button" onClick={()=>{
+                        setChain(10)
+                        connectWallet(10)}}>Optimsim主网</button></li>
+                      <li><button className="dropdown-item" type="button" onClick={()=>{
+                        setChain(56)
+                        connectWallet(56)}}>BSC主网</button></li>
+                    </ul>
+                </div>
+                <button className="btn btn-outline-secondary ">
+                  {chain==1337?
+                  ('本地测试网'):(chain==80001?
+                    ("Polygon测试网"):(chain==5?("以太测试网"):(chain==1?
+                      ("以太主网"):(chain==137?("Polygon主网"):(chain==42161?
+                        ("Arbitrum"):(chain==10?("Optimsim"):(chain==56?
+                          ("BSC"):("未选择"))))))))}
+                </button>
+              </div>
                   <div className="text-center">
-                      <h1 className={styles.title}>欢迎来到NFT世界!</h1>
+                  <h1 className={styles.title}>欢迎来到NFT世界!</h1>                      
                       {renderButton()}
                   </div>
               </div>
           </div>
         </div>
       <footer className={styles.footer}>由Alpha &#10084;制作</footer>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossOrigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossOrigin="anonymous"></script>
+
     </div>
   );
 }
 
 //
-const getProviderOrSigner = async (needSigner = false) => {
+const getProviderOrSigner = async (needSigner = false,chain=1337) => {
+  let chainName
+  switch (chain) {
+    case 1337:
+      chainName="本地测试网"
+      break;
+
+    case 80001:
+        chainName="Polygon测试网"
+        break;
+    case 5:
+          chainName="以太测试网"
+          break;
+    case 1:
+          chainName="以太主网"
+          break;
+    case 137:
+          chainName="Polygon主网"
+          break;
+    case 42161:
+          chainName="Arbitrum主网"
+          break;
+    case 10:
+          chainName="Optimsim主网"
+          break;
+    case 56:
+          chainName="BSC主网"
+          break;
+       
+
+    default:
+      chainName="本地测试网"
+      break;
+  }
+  
   const web3ModalRef = new Web3Modal({
       network: "goerli",
       providerOptions: {},
@@ -127,9 +205,9 @@ const getProviderOrSigner = async (needSigner = false) => {
 
   // If user is not connected to the Mumbai network, let them know and throw an error
   const { chainId } = await web3Provider.getNetwork();
-  if (chainId !== 1337) {
-    window.alert("Change the network to Mumbai");
-    throw new Error("Change network to Mumbai");
+  if (chainId !== chain) {
+    window.alert(`请将钱包网络改变${chainName}`)
+    throw new Error(`请将钱包网络改变${chainName}`);
   }
 
   if (needSigner) {
@@ -147,6 +225,7 @@ const Mint = () => {
   const [tokenIdMinted,setTokenIdsMinted]=useState(0);
   const [maxTokenId,setMaxTokenId]=useState(0);
   const [loading,setLoading]=useState(false);
+  const [chain,setChain]=useState(1337);
 
   const changeHandler = (event) => {
     selectedFiles.current=event.target.files
@@ -175,7 +254,7 @@ const Mint = () => {
     const getTokenIdsMinted = async (add) => {
       try {
         console.log('getToken contract Address',add)
-        const provider=await getProviderOrSigner();
+        const provider=await getProviderOrSigner(false,chain);
         const nftContract = new Contract(add, CONTRACT_abi, provider);
         await nftContract.tokenIds().then((res)=>setTokenIdsMinted(res.toString()));
         await nftContract.maxTokenIds().then((res)=>setMaxTokenId(res.toString()));
@@ -191,7 +270,7 @@ const Mint = () => {
     console.log("Public mint");
     let add=contractData[contractIndex].contractAdd
     console.log('Mint Contract Address',add)
-    const signer = await getProviderOrSigner(true);
+    const signer = await getProviderOrSigner(true,chain);
     const nftContract = new Contract(add, CONTRACT_abi, signer);
     const tx = await nftContract.mint({value: utils.parseEther("0.001"),});
     setLoading(true);
