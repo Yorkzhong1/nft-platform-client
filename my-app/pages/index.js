@@ -55,7 +55,7 @@ export default function Home() {
       if (buttonFunction==1){
         return(
             <div> 
-                <FolderUpload/>
+                <FolderUpload chain={chain}/>
             </div>
             
         )
@@ -314,10 +314,11 @@ const Mint = () => {
 
 //Folder upload component
 
-const FolderUpload = () => {
-
+const FolderUpload = (prop) => {
+  console.log('chain in FolderUpload',prop.chain)
   const selectedFiles=useRef()
   const [loading,setLoading] = useState(false);
+  
   
   //states on NFT
   const [numberOfPic, setNumberOfPic] = useState(0);
@@ -414,7 +415,7 @@ const FolderUpload = () => {
       document.getElementById('deployContract').className="btn btn-info w-100 mt-3 text-white"
       //upadte contract address
       console.log(name,myAddress,contract.address)
-      const res = await axios.post(`${serverUrl}/contracts`,{name:name,pic:`${CID}/${fileNames[0]}`, contractAdd:contract.address,myAddress:myAddress})
+      const res = await axios.post(`${serverUrl}/contracts`,{name:name,pic:`${CID}/${fileNames[0]}`, chain:prop.chain,contractAdd:contract.address,myAddress:myAddress})
     } catch (err) {
       console.error(err);
     }
