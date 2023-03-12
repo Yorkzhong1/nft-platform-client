@@ -84,7 +84,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>AlphaPunks</title>
+        <title>Per Se Gallery</title>
         <meta name="description" content="LW3Punks-Dapp" />
         <link rel="icon" href="/favicon.ico" />
         
@@ -144,13 +144,13 @@ export default function Home() {
                 </button>
               </div>
                   <div className="text-center">
-                  <h1 className={styles.title}>欢迎来到NFT世界!</h1>                      
+                  <h1 className={styles.title}>欢迎来到Per Se Gallery!</h1>                      
                       {renderButton()}
                   </div>
               </div>
           </div>
         </div>
-      <footer className={styles.footer}>由Alpha &#10084;制作</footer>
+      <footer className={styles.footer}>由Per Se Gallery &#10084;制作</footer>
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossOrigin="anonymous" async/>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossOrigin="anonymous" async/>
 
