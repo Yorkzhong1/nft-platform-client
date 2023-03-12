@@ -22,6 +22,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const web3ModalRef = useRef();
   const [buttonFunction, setButtonFunction] = useState(1);
+  const [chain, setChain] = useState(1337);
 
   useEffect(() => {
     if (!walletConnected) {
@@ -141,7 +142,7 @@ const getProviderOrSigner = async (needSigner = false) => {
 
 //Mint component
 const Mint = () => {
-  const [contractData,setContractData] = useState([{name: "FakeNFT", pic: "QmWaeSpuG8Vhz9LDyYYY7Z23Rbg35dU5QLkQd8tSiSTe89/k8v12nzrjshdlqqqgrci.webp", contractAdd: "0x705bb008f6Ea39551d77d1015bD18849Efc7BfC4", myAddress: "0xAA162386d3a9B2B8F35d9f578dC27E7F4F28dB89" }])
+  const [contractData,setContractData] = useState([{name: "请点击上面按钮刷新", pic: "QmWaeSpuG8Vhz9LDyYYY7Z23Rbg35dU5QLkQd8tSiSTe89/k8v12nzrjshdlqqqgrci.webp", contractAdd: "0x705bb008f6Ea39551d77d1015bD18849Efc7BfC4", myAddress: "0xAA162386d3a9B2B8F35d9f578dC27E7F4F28dB89" }])
   const [contractIndex,setContractIndex] = useState(0);
   const [tokenIdMinted,setTokenIdsMinted]=useState(0);
   const [maxTokenId,setMaxTokenId]=useState(0);
@@ -220,7 +221,7 @@ const Mint = () => {
   return (
       <div >
           <div className="m-5 p-3 border border-dark border-1">
-            <button type="button" className="btn btn-dark mt-5" onClick={getContract}>点击选择要Mint的NFT项目</button>
+            <button type="button" className="btn btn-light mt-5" onClick={getContract}>点击这里刷新</button>
             <div id="contract"> </div>
             <div className="m-5"><h5>{contractData[contractIndex].name}项目<br></br> 的 {tokenIdMinted}/{maxTokenId}个NFT已经被Mint</h5></div>
             <button className={styles.button} onClick={publicMint}>Public Mint 🚀</button>
