@@ -145,24 +145,26 @@ const getProviderOrSigner = async (needSigner = false) => {
 };
 //Mint component
 const Mint = () => {
-  const [contractData,setContractData] = useState([]);
+  const contractData = useRef([])
   const contractAdd= useRef("")
   const [contractIndex,setContractIndex] = useState(0);
   const changeHandler = (event) => {
     selectedFiles.current=event.target.files
   };
   useEffect(() => {
-    
-      setInterval(()=>{
-         console.log("Hello"); 
-        }, 3000);
+      setInterval(async ()=>{
+        console.log('repeating actions in Mint')
+        let res = await axios.get(`${serverUrl}/contracts`)
+        contractData.current=res.data
+        console.log('contractData',contractData.current)     
+        }, 10000);
 
   }, []);
 
   const getContract=async ()=>{
     let res = await axios.get(`${serverUrl}/contracts`)
-    setContractData(JSON.parse(res.data))
-    console.log('contractData',contractData)
+    contractData.current=res.data
+    console.log('contractData',contractData.current)     
   }
   
 
