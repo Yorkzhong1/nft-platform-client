@@ -150,14 +150,7 @@ const Mint = () => {
   const changeHandler = (event) => {
     selectedFiles.current=event.target.files
   };
-  useEffect(() => {
-      setInterval(()=>{
-        console.log('get contract')
-        // getContract()
-        
-        }, 100000);
 
-  }, []);
 
 
   function creatButton(name,index) {
