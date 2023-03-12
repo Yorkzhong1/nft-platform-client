@@ -408,14 +408,15 @@ const FolderUpload = (prop) => {
    
   }
 
+  
 
-  const deploytContract = async (name,maxTokenId,symble,URI) => {
+  const deploytContract = async (name,symble,URI,maxTokenId) => {
     console.log('deploy contract prop',name,maxTokenId,symble,URI)
     try {
       const signer = await getProviderOrSigner(true);
       const myAddress=await signer.getAddress();
       const Contract = new ethers.ContractFactory(CONTRACT_abi,CONTRACT_code,signer);
-      const contract = await Contract.deploy(name,maxTokenId,symble,URI);
+      const contract = await Contract.deploy(name,symble,URI,maxTokenId);
       // wait for the transaction to get mined
       const tx = await contract.deployed();
       // prop.setLoading(true)
@@ -482,10 +483,8 @@ const FolderUpload = (prop) => {
         </div>
         <button id="uploadPic" className="btn btn-danger w-100" onClick={handleSubmission}>1. 上传图片至IPFS</button>
         <button id="uploadMeta" className="btn btn-white w-100 mt-3 text-white" onClick={upLoadMeta}>2. 制作并上传MetaData</button> 
-        <button id="deployContract" className="btn btn-white w-100 mt-3 text-white" onClick={()=>{deploytContract(`ipfs://${MetaDataCID}`,numberOfPic,name,symble)}}>3.部署合约 🚀</button> 
-        
-      
-      </div>
+        <button id="deployContract" className="btn btn-white w-100 mt-3 text-white" onClick={()=>{deploytContract(name,symble,`ipfs://${MetaDataCID}`,numberOfPic)}}>3.部署合约 🚀</button> 
+        </div>
 
       <div className="m-5"></div>
       <div id="output" className="output"></div>
