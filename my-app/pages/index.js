@@ -151,6 +151,13 @@ const Mint = () => {
     selectedFiles.current=event.target.files
   };
 
+  useEffect(() => {
+    setInterval(()=>{
+      getContract() 
+    },3000)  
+    
+  }, []);
+  
   const creatButton=(name,index)=>{
       var btn = document.createElement("input");
       btn.type = "button";
@@ -205,7 +212,7 @@ const Mint = () => {
   const getContract=async ()=>{
     let res = await axios.get(`${serverUrl}/contracts`)
     setContractData(JSON.parse(res.data))
-    console.log(contractData)
+    console.log('合约数据',contractData)
     document.getElementById("contract").innerHTML=""
     for(let i=0;i<contractData.length;i++){
       creatButton(contractData[i].name,i)
@@ -216,11 +223,11 @@ const Mint = () => {
   return (
       <div >
           <div className="m-5 p-3 border border-dark border-1">
-            <button type="button" className="btn btn-dark mt-5" onClick={getContract}>刷新合约</button>
+            <button type="button" className="btn btn-dark mt-5" onClick={getContract}>合约列表</button>
             <div id="contract">
             </div>
-            <div>{contractData[contractIndex].name}项目 的 {tokenIdMinted}/{maxTokenId}个NFT已经被Mint</div>
-            <div id="Mint" className="m-5 p-3">Mint</div>
+            <div className="m-5"><h5>{contractData[contractIndex].name}项目<br></br> 的 {tokenIdMinted}/{maxTokenId}个NFT已经被Mint</h5></div>
+            
             <button className={styles.button} onClick={publicMint}>Public Mint 🚀</button>
           </div>
           
