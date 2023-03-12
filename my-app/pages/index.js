@@ -9,7 +9,6 @@ import axios from "axios"
 
 import {
   CONTRACT_abi,
-  NFT_CONTRACT_ADDRESS,
   CONTRACT_code,
   serverUrl,
 } from "../constants";
@@ -162,6 +161,7 @@ const Mint = () => {
       btn.addEventListener('click', async () => {
         setContractIndex(index)     
         await getTokenIdsMinted(contractData[index].contractAdd)
+        
     })
       document.getElementById("contract").appendChild(btn);
     }
@@ -169,12 +169,11 @@ const Mint = () => {
     const getTokenIdsMinted = async (add) => {
       try {
         console.log('getToken contract Address',add)
-        const provider = await getProviderOrSigner();
+        const provider=await getProviderOrSigner();
         const nftContract = new Contract(add, CONTRACT_abi, provider);
-        
         await nftContract.tokenIds().then((res)=>setTokenIdsMinted(res.toString()));
         await nftContract.maxTokenIds().then((res)=>setMaxTokenId(res.toString()));
-      
+        
       } catch (err) {
         console.error(err);
       }
@@ -226,7 +225,7 @@ const Mint = () => {
             <div id="contract">
                 
             </div>
-            <div>{contractIndex}</div>
+            <div>{contractData[contractIndex].name}项目 的 {tokenIdMinted}/{maxTokenId}个NFT已经被Mint</div>
           </div>
           <div className="m-5 p-3 border border-dark border-1">Alread Minted</div>
           <div className="m-5 p-3 border border-dark border-1">Mint</div>
