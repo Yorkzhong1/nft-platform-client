@@ -237,10 +237,10 @@ const Mint = (prop) => {
     selectedFiles.current=event.target.files
   };
 
-  // useEffect(() => {
-  //     getContract() 
+  useEffect(() => {
+      getContract() 
       
-  // }, []);
+  }, []);
   
   const creatButton=(name,index,chainName)=>{
       var btn = document.createElement("input");
