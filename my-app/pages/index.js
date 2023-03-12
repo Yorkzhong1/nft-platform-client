@@ -55,7 +55,7 @@ export default function Home() {
       if (buttonFunction==1){
         return(
             <div> 
-                <FolderUpload chain={chain}/>
+                <FolderUpload chain={chain} setLoading={setLoading}/>
             </div>
             
         )
@@ -64,7 +64,7 @@ export default function Home() {
       if (buttonFunction==2){
         return(
           <div> 
-             <Mint/>
+             <Mint chain={chain} setLoading={setLoading}/>
           </div>
           
         )
@@ -158,8 +158,8 @@ export default function Home() {
   );
 }
 
-//
-const getProviderOrSigner = async (needSigner = false,chain=1337) => {
+const getChainName = (chain)=>{
+
   let chainName
   switch (chain) {
     case 1337:
@@ -193,7 +193,13 @@ const getProviderOrSigner = async (needSigner = false,chain=1337) => {
       chainName="本地测试网"
       break;
   }
+  return chainName
+}
+
+//
+const getProviderOrSigner = async (needSigner = false,chain=1337) => {
   
+  let chainName = getChainName(chain)
   const web3ModalRef = new Web3Modal({
       network: "goerli",
       providerOptions: {},
@@ -219,13 +225,13 @@ const getProviderOrSigner = async (needSigner = false,chain=1337) => {
 
 
 //Mint component
-const Mint = () => {
-  const [contractData,setContractData] = useState([{name: "请点击上面按钮刷新", pic: "QmWaeSpuG8Vhz9LDyYYY7Z23Rbg35dU5QLkQd8tSiSTe89/k8v12nzrjshdlqqqgrci.webp", contractAdd: "0x705bb008f6Ea39551d77d1015bD18849Efc7BfC4", myAddress: "0xAA162386d3a9B2B8F35d9f578dC27E7F4F28dB89" }])
+const Mint = (prop) => {
+  const [contractData,setContractData] = useState([{name: "请点击下面按钮刷新", pic: "QmWaeSpuG8Vhz9LDyYYY7Z23Rbg35dU5QLkQd8tSiSTe89/k8v12nzrjshdlqqqgrci.webp", contractAdd: "0x705bb008f6Ea39551d77d1015bD18849Efc7BfC4", myAddress: "0xAA162386d3a9B2B8F35d9f578dC27E7F4F28dB89" }])
   const [contractIndex,setContractIndex] = useState(0);
   const [tokenIdMinted,setTokenIdsMinted]=useState(0);
   const [maxTokenId,setMaxTokenId]=useState(0);
-  const [loading,setLoading]=useState(false);
-  const [chain,setChain]=useState(1337);
+  const [chainName,setChainName]=useState("以太主网");
+  
 
   const changeHandler = (event) => {
     selectedFiles.current=event.target.files
@@ -233,28 +239,30 @@ const Mint = () => {
 
   useEffect(() => {
       getContract() 
+      
   }, []);
   
-  const creatButton=(name,index)=>{
+  const creatButton=(name,index,chainName)=>{
       var btn = document.createElement("input");
       btn.type = "button";
-      btn.style.width = "100px";
-      btn.className="btn btn-primary m-2"
+      
+      btn.className="btn btn-outline-secondary m-2"
       btn.id = `${index}`;
       btn.name = "submit";
-      btn.value = `${name}`;
+      btn.value = `${name} @ ${chainName}`;
       btn.addEventListener('click', async () => {
-        setContractIndex(index)     
-        await getTokenIdsMinted(contractData[index].contractAdd)
+        setContractIndex(index)
+        setChainName(chainName)
+        await getTokenIdsMinted(contractData[index].contractAdd,prop.chain)
         
     })
       document.getElementById("contract").appendChild(btn);
     }
 
-    const getTokenIdsMinted = async (add) => {
+    const getTokenIdsMinted = async (add,chain) => {
       try {
         console.log('getToken contract Address',add)
-        const provider=await getProviderOrSigner(false,chain);
+        const provider=await getProviderOrSigner(false,prop.chain);
         const nftContract = new Contract(add, CONTRACT_abi, provider);
         await nftContract.tokenIds().then((res)=>setTokenIdsMinted(res.toString()));
         await nftContract.maxTokenIds().then((res)=>setMaxTokenId(res.toString()));
@@ -270,14 +278,14 @@ const Mint = () => {
     console.log("Public mint");
     let add=contractData[contractIndex].contractAdd
     console.log('Mint Contract Address',add)
-    const signer = await getProviderOrSigner(true,chain);
+    const signer = await getProviderOrSigner(true,prop.chain);
     const nftContract = new Contract(add, CONTRACT_abi, signer);
     const tx = await nftContract.mint({value: utils.parseEther("0.001"),});
-    setLoading(true);
-      await tx.wait();
-    setLoading(false);
+    // prop.setLoading(true);
+    //   await tx.wait();
+    // prop.setLoading(false);
     window.alert("你成功的mint了一个AlphaPunk!");
-    getTokenIdsMinted(add)
+    getTokenIdsMinted(add,prop.chain)
 
   } catch (err) {
     console.error(err);
@@ -292,7 +300,8 @@ const Mint = () => {
     console.log('合约数据',contractData)
     document.getElementById("contract").innerHTML=""
     for(let i=0;i<contractData.length;i++){
-      creatButton(contractData[i].name,i)
+      let chainName=getChainName(prop.chain)
+      creatButton(contractData[i].name,i,chainName)
     }
   }
   
@@ -300,9 +309,10 @@ const Mint = () => {
   return (
       <div >
           <div className="m-5 p-3 border border-dark border-1">
-            <button type="button" className="btn btn-light mt-5" onClick={getContract}>点击这里刷新</button>
+            
             <div id="contract"> </div>
-            <div className="m-5"><h5>{contractData[contractIndex].name}项目<br></br> 的 {tokenIdMinted}/{maxTokenId}个NFT已经被Mint</h5></div>
+            <button type="button" className="btn btn-light mt-5 text-danger" onClick={getContract}>点击这里刷新NFT列表</button>
+            <div className="m-5"><h5>项目:{contractData[contractIndex].name}<br></br>公链:{chainName}<br></br> Mint情况：{tokenIdMinted}/{maxTokenId}个NFT已经被Mint</h5></div>
             <button className={styles.button} onClick={publicMint}>Public Mint 🚀</button>
           </div>
           
@@ -408,9 +418,9 @@ const FolderUpload = (prop) => {
       const contract = await Contract.deploy(name,maxTokenId,symble,URI);
       // wait for the transaction to get mined
       const tx = await contract.deployed();
-      // setLoading(true)
+      // prop.setLoading(true)
       // await tx.wait()
-      // setLoading(false)
+      // prop.setLoading(false)
       window.alert(`合约已部署，地址为${contract.address}`);
       document.getElementById('deployContract').className="btn btn-info w-100 mt-3 text-white"
       //upadte contract address
