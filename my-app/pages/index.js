@@ -13,7 +13,7 @@ import {
   CONTRACT_code,
   serverUrl,
 } from "../constants";
-import { async } from "recursive-fs/lib/copy";
+// import { async } from "recursive-fs/lib/copy";
 
 const Pinata_api_key =  "dc5bf98b2fd4875f0913"
 const Pinata_secret_api_key =  "479ec86c28bdf05eb13a13c86ea6029281f204b3ed3d6e55d372d5eff2b70044"
