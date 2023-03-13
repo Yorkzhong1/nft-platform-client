@@ -228,7 +228,7 @@ const getProviderOrSigner = async (needSigner = false,chain=1337) => {
 
 //Mint component
 const Mint = (prop) => {
-  const [contractData,setContractData] = useState([{name: "请点击下面按钮刷新", pic: "QmWaeSpuG8Vhz9LDyYYY7Z23Rbg35dU5QLkQd8tSiSTe89/k8v12nzrjshdlqqqgrci.webp", contractAdd: "0x705bb008f6Ea39551d77d1015bD18849Efc7BfC4", myAddress: "0xAA162386d3a9B2B8F35d9f578dC27E7F4F28dB89" }])
+  const [contractData,setContractData] = useState([])
   const [contractIndex,setContractIndex] = useState(0);
   const [tokenIdMinted,setTokenIdsMinted]=useState(0);
   const [maxTokenId,setMaxTokenId]=useState(0);
@@ -241,6 +241,8 @@ const Mint = (prop) => {
 
   useEffect(() => {
       getContract() 
+      console.log("initial contract data",contractData,contractIndex)
+      
       
   }, []);
   
@@ -268,6 +270,7 @@ const Mint = (prop) => {
         const nftContract = new Contract(add, CONTRACT_abi, provider);
         await nftContract.tokenIds().then((res)=>setTokenIdsMinted(res.toString()));
         await nftContract.maxTokenIds().then((res)=>setMaxTokenId(res.toString()));
+        console.log('token data refreshed')
         
       } catch (err) {
         console.error(err);
@@ -286,7 +289,7 @@ const Mint = (prop) => {
     // prop.setLoading(true);
     //   await tx.wait();
     // prop.setLoading(false);
-    window.alert("你成功的mint了一个AlphaPunk!");
+    window.alert(`你成功的mint了一个${contractData[contractIndex].name} NFT!`);
     getTokenIdsMinted(add,prop.chain)
 
   } catch (err) {
@@ -312,10 +315,9 @@ const Mint = (prop) => {
   return (
       <div >
           <div className="m-5 p-3 border border-dark border-1">
-            
-            <div id="contract"> </div>
             <button type="button" className="btn btn-light mt-5 text-danger" onClick={getContract}>点击这里刷新NFT列表</button>
-            <div className="m-5"><h5>项目:{contractData[contractIndex].name}<br></br>公链:{chainName}<br></br> Mint情况：{tokenIdMinted}/{maxTokenId}个NFT已经被Mint</h5></div>
+            <div id="contract"> </div>
+            <div className="m-5"><h5>项目:{(contractData[contractIndex])?(contractData[contractIndex].name):("")}<br></br>公链:{chainName}<br></br> Mint情况：{tokenIdMinted}/{maxTokenId}个NFT已经被Mint</h5></div>
             <button className={styles.button} onClick={publicMint}>Public Mint 🚀</button>
           </div>
           
