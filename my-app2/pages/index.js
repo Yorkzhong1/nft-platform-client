@@ -297,6 +297,7 @@ const Mint = (prop) => {
 
 
   const getContract=async ()=>{
+    console.log('getting contract data')
     let res = await axios.get(`${serverUrl}/contracts`)
     setContractData(JSON.parse(res.data))
     console.log('合约数据',contractData)
