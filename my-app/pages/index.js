@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "../styles/Home.module.css";
 import Web3Modal from "web3modal";
 import axios from "axios"
+
 // import { getProviderOrSigner } from "./utils";
 
 
@@ -12,6 +13,7 @@ import {
   CONTRACT_code,
   serverUrl,
 } from "../constants";
+import { async } from "recursive-fs/lib/copy";
 
 const Pinata_api_key =  "dc5bf98b2fd4875f0913"
 const Pinata_secret_api_key =  "479ec86c28bdf05eb13a13c86ea6029281f204b3ed3d6e55d372d5eff2b70044"
@@ -432,17 +434,27 @@ const FolderUpload = (prop) => {
     }
   };
 
+  const deleteData=async()=>{
+    console.log('deleting data on server')
+    try {
+      const res = await axios.post(`${serverUrl}/delete`)
+      window.alert(res.data)
+    } catch (err) {
+      console.error(err);
+    }
+
+  }
+
 
   return (
     <div >
       <div className="m-5 p-3 border border-dark border-1">
           <h4 className="text-center">合约部署</h4>
           <div className="text-left">
-              <div className="text-info">合约部署共需要三个步骤，请逐次点击按钮:</div>
-              <div>第一步：将所有图片放在一个文件夹内，并将次文件夹上传</div>
-              <div>第二步：制作并上传metaData</div>
-              <div>第三步：部署合约</div>
+              <div className="text-info">合约部署共需要三个步骤，请逐次完成:</div>
           </div>
+          <button id="deleteData" className="btn btn-secondary w-100" onClick={deleteData}>0. 如需要，可清理服务器已有数据</button>
+          <div>第一步：将所有图片放在一个文件夹内，并将次文件夹上传</div>
           <div className="input-group mb-3 mt-2">
               <div className="input-group-prepend">
                   
@@ -481,9 +493,9 @@ const FolderUpload = (prop) => {
               }}
               />
         </div>
-        <button id="uploadPic" className="btn btn-danger w-100" onClick={handleSubmission}>1. 上传图片至IPFS</button>
-        <button id="uploadMeta" className="btn btn-white w-100 mt-3 text-white" onClick={upLoadMeta}>2. 制作并上传MetaData</button> 
-        <button id="deployContract" className="btn btn-white w-100 mt-3 text-white" onClick={()=>{deploytContract(name,symble,`ipfs://${MetaDataCID}`,numberOfPic)}}>3.部署合约 🚀</button> 
+        <button id="uploadPic" className="btn btn-danger w-100" onClick={handleSubmission}>第二步：上传图片至IPFS</button>
+        <button id="uploadMeta" className="btn btn-white w-100 mt-3 text-white" onClick={upLoadMeta}>第三步： 制作并上传MetaData</button> 
+        <button id="deployContract" className="btn btn-white w-100 mt-3 text-white" onClick={()=>{deploytContract(name,symble,`ipfs://${MetaDataCID}`,numberOfPic)}}>第四步：部署合约 🚀</button> 
         </div>
 
       <div className="m-5"></div>
