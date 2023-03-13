@@ -200,7 +200,7 @@ const getChainName = (chain)=>{
 
 //
 const getProviderOrSigner = async (needSigner = false,chain=1337) => {
-  
+  console.log('chain in getProviderOrSigner',chain)
   let chainName = getChainName(chain)
   const web3ModalRef = new Web3Modal({
       network: "goerli",
@@ -413,10 +413,10 @@ const FolderUpload = (prop) => {
 
   
 
-  const deploytContract = async (name,symble,URI,maxTokenId) => {
+  const deploytContract = async (name,symble,URI,maxTokenId,chain) => {
     console.log('deploy contract prop',name,maxTokenId,symble,URI)
     try {
-      const signer = await getProviderOrSigner(true);
+      const signer = await getProviderOrSigner(true,chain);
       const myAddress=await signer.getAddress();
       const Contract = new ethers.ContractFactory(CONTRACT_abi,CONTRACT_code,signer);
       const contract = await Contract.deploy(name,symble,URI,maxTokenId);
@@ -496,7 +496,7 @@ const FolderUpload = (prop) => {
         </div>
         <button id="uploadPic" className="btn btn-danger w-100" onClick={handleSubmission}>第二步：上传图片至IPFS</button>
         <button id="uploadMeta" className="btn btn-white w-100 mt-3 text-white" onClick={upLoadMeta}>第三步： 制作并上传MetaData</button> 
-        <button id="deployContract" className="btn btn-white w-100 mt-3 text-white" onClick={()=>{deploytContract(name,symble,`ipfs://${MetaDataCID}`,numberOfPic)}}>第四步：部署合约 🚀</button> 
+        <button id="deployContract" className="btn btn-white w-100 mt-3 text-white" onClick={()=>{deploytContract(name,symble,`ipfs://${MetaDataCID}`,numberOfPic,prop.chain)}}>第四步：部署合约 🚀</button> 
         </div>
 
       <div className="m-5"></div>
