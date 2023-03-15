@@ -243,22 +243,23 @@ const Mint = (prop) => {
   useEffect(() => {
       getContract() 
       console.log("initial contract data",contractData,contractIndex)
-      
-      
   }, []);
   
-  const creatButton=(name,index,chainName)=>{
+  const createButton=(Cdata,index,chainName)=>{
       var btn = document.createElement("input");
       btn.type = "button";
       
       btn.className="btn btn-outline-secondary m-2"
       btn.id = `${index}`;
       btn.name = "submit";
-      btn.value = `${name} @ ${chainName}`;
+      btn.value = `${Cdata[index].name} @ ${chainName}`;
       btn.addEventListener('click', async () => {
+        // getContract()
+        console.log('contract data',Cdata,prop.chain)
         setContractIndex(index)
         setChainName(chainName)
-        await getTokenIdsMinted(contractData[index].contractAdd,prop.chain)
+        let res=await getTokenIdsMinted(Cdata[index].contractAdd,prop.chain)
+        console.log(res)
         
     })
       document.getElementById("contract").appendChild(btn);
@@ -269,9 +270,17 @@ const Mint = (prop) => {
         console.log('getToken contract Address',add)
         const provider=await getProviderOrSigner(false,prop.chain);
         const nftContract = new Contract(add, CONTRACT_abi, provider);
-        await nftContract.tokenIds().then((res)=>setTokenIdsMinted(res.toString()));
-        await nftContract.maxTokenIds().then((res)=>setMaxTokenId(res.toString()));
+        let _tokenIds = await nftContract.tokenIds()
+        let _maxTokenIds = await nftContract.maxTokenIds()
+        console.log("已经挖完？",_tokenIds.toNumber()==_maxTokenIds.toNumber())
+        setTokenIdsMinted(_tokenIds.toString());
+        setMaxTokenId(_maxTokenIds.toString());
         console.log('token data refreshed')
+        if(_tokenIds.toNumber()==_maxTokenIds.toNumber()){
+          await axios.post(`${serverUrl}/deActive`,{contractAdd:add})//if all NFT are minted, then deactive it
+          window.alert(`NFT ${add} 已经mint结束，不再显示`)
+        }
+        
         
       } catch (err) {
         console.error(err);
@@ -292,7 +301,6 @@ const Mint = (prop) => {
     // prop.setLoading(false);
     window.alert(`你成功的mint了一个${contractData[contractIndex].name} NFT!`);
     getTokenIdsMinted(add,prop.chain)
-
   } catch (err) {
     console.error(err);
   }
@@ -301,14 +309,17 @@ const Mint = (prop) => {
 
 
   const getContract=async ()=>{
-    console.log('getting contract data')
-    let res = await axios.get(`${serverUrl}/contracts`)
-    setContractData(JSON.parse(res.data))
-    console.log('合约数据',contractData)
+    console.log('getting active contract data')
+    // let res = await axios.get(`${serverUrl}/contracts`)
+    let res= await axios.post(`${serverUrl}/getNFT`,{active:true})
+    console.log(res.data)
+    let Cdata=res.data
+    setContractData(Cdata)
+    
     document.getElementById("contract").innerHTML=""
-    for(let i=0;i<contractData.length;i++){
-      let chainName=getChainName(contractData[i].chain)
-      creatButton(contractData[i].name,i,chainName)
+    for(let i=0;i<Cdata.length;i++){
+      let chainName=getChainName(Cdata[i].chain)
+      createButton(Cdata,i,chainName)
     }
   }
   
@@ -432,7 +443,10 @@ const FolderUpload = (prop) => {
       document.getElementById('deployContract').className="btn btn-info w-100 mt-3 text-white"
       //upadte contract address
       console.log(name,myAddress,contract.address)
-      const res = await axios.post(`${serverUrl}/contracts`,{name:name,pic:`${CID}/${fileNames[0]}`, chain:prop.chain,contractAdd:contract.address,myAddress:myAddress})
+      // const res = await axios.post(`${serverUrl}/contracts`,{name:name,pic:`${CID}/${fileNames[0]}`, chain:prop.chain,contractAdd:contract.address,myAddress:myAddress})
+      let newNFT={name:name,pic:`${CID}/${fileNames[0]}`,chain:prop.chain,contractAdd:contract.address,ownerAdd:myAddress,active:true}
+      await axios.post(`${serverUrl}/addNFT`,newNFT)
+      .then((res)=>{console.log(res.data)})
     } catch (err) {
       console.error(err);
     }
@@ -441,8 +455,8 @@ const FolderUpload = (prop) => {
   const deleteData=async()=>{
     console.log('deleting data on server')
     try {
-      const res = await axios.post(`${serverUrl}/delete`)
-      window.alert(res.data)
+      await axios.post(`${serverUrl}/remove`,{active:false})
+      .then((res)=>{window.alert(res.data)})
     } catch (err) {
       console.error(err);
     }
@@ -457,7 +471,7 @@ const FolderUpload = (prop) => {
           <div className="text-left">
               <div className="text-info">合约部署共需要三个步骤，请逐次完成:</div>
           </div>
-          <button id="deleteData" className="btn btn-secondary w-100" onClick={deleteData}>0. 如需要，可清理服务器已有数据</button>
+          <button id="deleteData" className="btn btn-secondary w-100" onClick={deleteData}>0. 清理服务器不活跃NFT数据</button>
           <div>第一步：将所有图片放在一个文件夹内，并将次文件夹上传</div>
           <div className="input-group mb-3 mt-2">
               <div className="input-group-prepend">
@@ -525,10 +539,10 @@ const test=async ()=>{
 }
 // test()
 
-const createNFT=async ()=>{
+const createNFT=async (NFT)=>{
   try{
       // console.log(`${serverUrl}/addNFT`)
-      await axios.post(`${serverUrl}/addNFT`,newNFT)
+      await axios.post(`${serverUrl}/addNFT`,NFT)
       .then((res)=>{console.log(res.data)})
   }catch (error) {
       console.log(error);

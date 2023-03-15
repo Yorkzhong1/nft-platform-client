@@ -297,7 +297,8 @@ const Mint = (prop) => {
 
 
   const getContract=async ()=>{
-    let res = await axios.get(`${serverUrl}/contracts`)
+    axios.post(`${serverUrl}/getNFT`,{active:active}).then(console.log)
+    // let res2 = await axios.get(`${serverUrl}/contracts`)
     setContractData(JSON.parse(res.data))
     console.log('合约数据',contractData)
     document.getElementById("contract").innerHTML=""
@@ -504,11 +505,3 @@ const FolderUpload = (prop) => {
     </div>
   )
 }
-
-
-
-
-
-
-
-
