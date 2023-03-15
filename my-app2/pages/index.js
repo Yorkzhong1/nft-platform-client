@@ -67,7 +67,7 @@ export default function Home() {
       if (buttonFunction==2){
         return(
           <div> 
-             <Mint chain={chain} setLoading={setLoading}/>
+             <Mint chain={chain} setChain={setChain} setLoading={setLoading}/>
           </div>
           
         )
@@ -200,7 +200,7 @@ const getChainName = (chain)=>{
 }
 
 //
-const getProviderOrSigner = async (needSigner = false,chain=1337) => {
+const getProviderOrSigner = async (needSigner = false,chain) => {
   console.log('chain in getProviderOrSigner',chain)
   let chainName = getChainName(chain)
   const web3ModalRef = new Web3Modal({
@@ -253,11 +253,14 @@ const Mint = (prop) => {
       btn.id = `${index}`;
       btn.name = "submit";
       btn.value = `${Cdata[index].name} @ ${chainName}`;
+      
       btn.addEventListener('click', async () => {
         // getContract()
         console.log('contract data',Cdata)
         setContractIndex(index)
         setChainName(chainName)
+        console.log("chain in createbutton",Cdata[index].chain)
+        prop.setChain(Cdata[index].chain)
         let res=await getTokenIdsMinted(Cdata[index].contractAdd,Cdata[index].chain)
         console.log(res)
         
@@ -268,6 +271,7 @@ const Mint = (prop) => {
     const getTokenIdsMinted = async (add,chain) => {
       try {
         console.log('getToken contract Address',add)
+        console.log('chain in get TokenId',chain)
         const provider=await getProviderOrSigner(false,chain);
         const nftContract = new Contract(add, CONTRACT_abi, provider);
         let _tokenIds = await nftContract.tokenIds()
