@@ -255,10 +255,10 @@ const Mint = (prop) => {
       btn.value = `${Cdata[index].name} @ ${chainName}`;
       btn.addEventListener('click', async () => {
         // getContract()
-        console.log('contract data',Cdata,prop.chain)
+        console.log('contract data',Cdata)
         setContractIndex(index)
         setChainName(chainName)
-        let res=await getTokenIdsMinted(Cdata[index].contractAdd,prop.chain)
+        let res=await getTokenIdsMinted(Cdata[index].contractAdd,Cdata[index].chain)
         console.log(res)
         
     })
@@ -268,7 +268,7 @@ const Mint = (prop) => {
     const getTokenIdsMinted = async (add,chain) => {
       try {
         console.log('getToken contract Address',add)
-        const provider=await getProviderOrSigner(false,prop.chain);
+        const provider=await getProviderOrSigner(false,chain);
         const nftContract = new Contract(add, CONTRACT_abi, provider);
         let _tokenIds = await nftContract.tokenIds()
         let _maxTokenIds = await nftContract.maxTokenIds()
