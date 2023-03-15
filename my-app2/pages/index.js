@@ -215,7 +215,7 @@ const getProviderOrSigner = async (needSigner = false,chain=1337) => {
   // If user is not connected to the Mumbai network, let them know and throw an error
   const { chainId } = await web3Provider.getNetwork();
   if (chainId !== chain) {
-    window.alert(`请将钱包网络改变${chainName}`)
+    window.alert(`请将钱包网络改变${chainName}后再重新尝试`)
     throw new Error(`请将钱包网络改变${chainName}`);
   }
 
