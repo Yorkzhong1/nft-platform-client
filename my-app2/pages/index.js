@@ -25,7 +25,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const web3ModalRef = useRef();
   const [buttonFunction, setButtonFunction] = useState(1);
-  const [chain, setChain] = useState(1337);
+  const [chain, setChain] = useState(80001);
 
   useEffect(() => {
     if (!walletConnected) {
@@ -58,7 +58,7 @@ export default function Home() {
       if (buttonFunction==1){
         return(
             <div> 
-                <FolderUpload chain={chain} setLoading={setLoading}/>
+                <FolderUpload/>
             </div>
             
         )
@@ -67,7 +67,7 @@ export default function Home() {
       if (buttonFunction==2){
         return(
           <div> 
-             <Mint chain={chain} setChain={setChain} setLoading={setLoading}/>
+             <Mint />
           </div>
           
         )
@@ -110,31 +110,21 @@ export default function Home() {
                       连接网络
                     </button>
                     <ul className="dropdown-menu">
+                      
+                      <li><button className="dropdown-item" type="button" onClick={()=>{
+                        setChain(80001)
+                        connectWallet(80001)}}>Polygon 测试网</button></li>
                       <li><button className="dropdown-item" type="button" onClick={()=>{
                         setChain(1337)
                         connectWallet(1337)
                         }}>本地测试网</button></li>
                       <li><button className="dropdown-item" type="button" onClick={()=>{
-                        setChain(80001)
-                        connectWallet(80001)}}>Polygon 测试网</button></li>
-                      <li><button className="dropdown-item" type="button" onClick={()=>{
-                        setChain(5)
-                        connectWallet(5)}}>以太测试网</button></li>
-                      <li><button className="dropdown-item" type="button" onClick={()=>{
-                        setChain(1)
-                        connectWallet(1)}}>以太主网</button></li>
-                      <li><button className="dropdown-item" type="button" onClick={()=>{
                         setChain(137)
                         connectWallet(137)}}>Polygon主网</button></li>
                       <li><button className="dropdown-item" type="button" onClick={()=>{
-                        setChain(42161)
-                        connectWallet(42161)}}>Arbitrum主网</button></li>
-                      <li><button className="dropdown-item" type="button" onClick={()=>{
-                        setChain(10)
-                        connectWallet(10)}}>Optimsim主网</button></li>
-                      <li><button className="dropdown-item" type="button" onClick={()=>{
-                        setChain(56)
-                        connectWallet(56)}}>BSC主网</button></li>
+                        setChain(1)
+                        connectWallet(1)}}>以太主网</button></li>
+                      
                     </ul>
                 </div>
                 <button className="btn btn-light ">
@@ -234,6 +224,8 @@ const Mint = (prop) => {
   const [tokenIdMinted,setTokenIdsMinted]=useState(0);
   const [maxTokenId,setMaxTokenId]=useState(0);
   const [chainName,setChainName]=useState("以太主网");
+  const [chain,setChain]=useState(80001);
+  const button = useRef("0")
   
 
   const changeHandler = (event) => {
@@ -248,19 +240,17 @@ const Mint = (prop) => {
   const createButton=(Cdata,index,chainName)=>{
       var btn = document.createElement("input");
       btn.type = "button";
-      
-      btn.className="btn btn-outline-secondary m-2"
+      btn.className="btn btn-success m-2"
       btn.id = `${index}`;
       btn.name = "submit";
       btn.value = `${Cdata[index].name} @ ${chainName}`;
       
       btn.addEventListener('click', async () => {
         // getContract()
-        console.log('contract data',Cdata)
         setContractIndex(index)
         setChainName(chainName)
         console.log("chain in createbutton",Cdata[index].chain)
-        prop.setChain(Cdata[index].chain)
+        setChain(Cdata[index].chain)
         let res=await getTokenIdsMinted(Cdata[index].contractAdd,Cdata[index].chain)
         console.log(res)
         
@@ -276,13 +266,13 @@ const Mint = (prop) => {
         const nftContract = new Contract(add, CONTRACT_abi, provider);
         let _tokenIds = await nftContract.tokenIds()
         let _maxTokenIds = await nftContract.maxTokenIds()
-        console.log("已经挖完？",_tokenIds.toNumber()==_maxTokenIds.toNumber())
+        console.log("已经挖完？",_tokenIds.toNumber(),_maxTokenIds.toNumber())
         setTokenIdsMinted(_tokenIds.toString());
         setMaxTokenId(_maxTokenIds.toString());
         console.log('token data refreshed')
         if(_tokenIds.toNumber()==_maxTokenIds.toNumber()){
           await axios.post(`${serverUrl}/deActive`,{contractAdd:add})//if all NFT are minted, then deactive it
-          window.alert(`NFT ${add} 已经mint结束，不再显示`)
+          window.alert(`NFT ${add} 已经mint结束，请刷新NFT列表`)
         }
         
         
@@ -297,14 +287,15 @@ const Mint = (prop) => {
     console.log("Public mint");
     let add=contractData[contractIndex].contractAdd
     console.log('Mint Contract Address',add)
-    const signer = await getProviderOrSigner(true,prop.chain);
+    const signer = await getProviderOrSigner(true,chain);
     const nftContract = new Contract(add, CONTRACT_abi, signer);
+    
+    
     const tx = await nftContract.mint({value: utils.parseEther("0.001"),});
-    // prop.setLoading(true);
-    //   await tx.wait();
-    // prop.setLoading(false);
+    window.alert(`开始Mint NFT，请稍待...`);
+      await tx.wait();
     window.alert(`你成功的mint了一个${contractData[contractIndex].name} NFT!`);
-    getTokenIdsMinted(add,prop.chain)
+    let res=await getTokenIdsMinted(add,chain)    
   } catch (err) {
     console.error(err);
   }
@@ -346,9 +337,10 @@ const Mint = (prop) => {
 //Folder upload component
 
 const FolderUpload = (prop) => {
-  console.log('chain in FolderUpload',prop.chain)
+  console.log('folder upload')
   const selectedFiles=useRef()
-  const [loading,setLoading] = useState(false);
+  const [status,setStatus] = useState("normal");
+  const [chain,setChain] = useState(80001);
   
   
   //states on NFT
@@ -356,6 +348,7 @@ const FolderUpload = (prop) => {
   const [name, setName] = useState();
   const [description, setDescription] = useState();
   const [fileNames, setFileNames] = useState([]);
+  const [price, setPrice] = useState(0.001);
   
 //States on IPFS CID
   const [CID, setCID] = useState("");
@@ -365,28 +358,19 @@ const FolderUpload = (prop) => {
 //contract deploy states
 
   const symble = useRef('Punk');
+  // const price = useRef(0.001);
   const changeHandler = (event) => {
     selectedFiles.current=event.target.files
   };
 
 
 
-  const upLoadMeta = async function() {
-    console.log('sending request to server')
-    console.log(serverUrl)
-    const res2 = await axios.post(`${serverUrl}/meta`,{name:name,description:description,number:numberOfPic,CID:CID,fileNames:JSON.stringify(fileNames)})
-    console.log(res2.data)
-    setMetaDataCID(res2.data)
-    document.getElementById('uploadMeta').className="btn btn-info w-100 mt-3 text-white"
-    document.getElementById('deployContract').className="btn btn-danger w-100 mt-3 text-white"
-    window.alert(`MetaData已经上传至IPFS; 地址为:${res2.data}`);
-  }
-
   async function handleSubmission() {
+    //get all inputs
     let names=[]
-
-    
-    setNumberOfPic(Array.from(selectedFiles.current).length)
+    let numbers = Array.from(selectedFiles.current).length
+    setNumberOfPic(numbers)
+    console.log(numbers)
 
     const formData = new FormData();
     Array.from(selectedFiles.current).forEach((file) => {
@@ -406,6 +390,8 @@ const FolderUpload = (prop) => {
     });
     formData.append('pinataOptions', options);
     let metaCID
+    //loading picture to IPFS
+    setStatus("pic")
     try{
       await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
         maxBodyLength: "Infinity",
@@ -420,37 +406,56 @@ const FolderUpload = (prop) => {
     } catch (error) {
       console.log(error);
     }
-
     console.log('Picture are uploaded')
-    window.alert(`${Array.from(selectedFiles.current).length}个图片已经上传IPFS; 地址为:${metaCID}`);
+    console.log(`${Array.from(selectedFiles.current).length}个图片已经上传IPFS; 地址为:${metaCID}`);
     
-    document.getElementById('uploadPic').className="btn btn-info w-100 mt-3 text-white"
-    document.getElementById('uploadMeta').className="btn btn-danger w-100 mt-3 text-white"
    
+    //upload Meta
+    console.log('uploading Meta')
+    setStatus("metadata")
+    console.log(`${serverUrl}/meta`,{name:name,description:description,number:numbers,CID:metaCID,fileNames:JSON.stringify(names)})
+    const res2 = await axios.post(`${serverUrl}/meta`,{name:name,description:description,number:numbers,CID:metaCID,fileNames:JSON.stringify(names)})
+    console.log(res2.data)
+    console.log('Meta数据上传完毕')
+    setMetaDataCID(res2.data)
+    console.log(`MetaData已经上传至IPFS; 地址为:${res2.data}`);
+    
+    //testing
+    console.log('start deploying contract')
+    console.log("contract pro in handleSubmission",name,symble.current,`ipfs://${res2.data}`,numbers,chain,price)
+    setStatus("contract")
+    await deployContract(name,symble.current,`ipfs://${res2.data}`,numbers,chain,price)
+    
   }
 
   
 
-  const deploytContract = async (name,symble,URI,maxTokenId,chain) => {
-    console.log('deploy contract prop',name,maxTokenId,symble,URI)
+  const deployContract = async (name,symble,URI,maxTokenId,chain,price) => {
+    console.log('deploy contract prop',name,symble,URI,maxTokenId,chain,price)
+    const priceInWei = ethers.utils.parseUnits(price.toString(), "ether");
+  // const deployedLW3PunksContract = await lw3PunksContract.deploy("testing Punk","TP",metadataURL,2,price);
+
     try {
       const signer = await getProviderOrSigner(true,chain);
       const myAddress=await signer.getAddress();
       const Contract = new ethers.ContractFactory(CONTRACT_abi,CONTRACT_code,signer);
-      const contract = await Contract.deploy(name,symble,URI,maxTokenId);
+      console.log("prop for deploying contract:",name,symble,URI,maxTokenId,priceInWei)
+      const contract = await Contract.deploy(name,symble,URI,maxTokenId,priceInWei);
       // wait for the transaction to get mined
       const tx = await contract.deployed();
       // prop.setLoading(true)
       // await tx.wait()
       // prop.setLoading(false)
-      window.alert(`合约已部署，地址为${contract.address}`);
-      document.getElementById('deployContract').className="btn btn-info w-100 mt-3 text-white"
+      console.log(`合约已部署，地址为${contract.address}`);
+      setStatus("uploadServer")
       //upadte contract address
       console.log(name,myAddress,contract.address)
       // const res = await axios.post(`${serverUrl}/contracts`,{name:name,pic:`${CID}/${fileNames[0]}`, chain:prop.chain,contractAdd:contract.address,myAddress:myAddress})
-      let newNFT={name:name,pic:`${CID}/${fileNames[0]}`,chain:prop.chain,contractAdd:contract.address,ownerAdd:myAddress,active:true}
+      let newNFT={name:name,pic:`${CID}/${fileNames[0]}`,chain:chain,contractAdd:contract.address,ownerAdd:myAddress,active:true}
+      console.log('new NFT data to server',newNFT)
       await axios.post(`${serverUrl}/addNFT`,newNFT)
       .then((res)=>{console.log(res.data)})
+      setStatus("done")
     } catch (err) {
       console.error(err);
     }
@@ -464,60 +469,125 @@ const FolderUpload = (prop) => {
     } catch (err) {
       console.error(err);
     }
-
+  }
+  const renderButton=()=>{
+    if(status=="normal"){
+      return(<div class="alert alert-dark text-danger" role="alert">部署尚未开始</div>)
+    }else if(status=="pic"){
+      return(
+        <div class="alert alert-danger text-danger" role="alert">正在上传图片...</div>
+      )
+    }else if(status=="metadata"){
+      return(<div class="alert alert-primary text-danger" role="alert">正在上传Meta...</div>)
+    }else if(status=="contract"){
+      return(<div class="alert alert-secondary text-danger" role="alert">正在部署合约...</div>)
+    }else if(status=="uploadServer"){
+      return(<div class="alert alert-info text-danger" role="alert">正在上传合约信息至服务器...</div>)
+    }else if(status=="done"){
+      return(<div class="alert alert-success text-danger" role="alert">NFT部署完成</div>)
+    }
+    
+    
   }
 
-
   return (
-    <div >
-      <div className="m-5 p-3 border border-dark border-1">
-          <h4 className="text-center">合约部署</h4>
-          <div className="text-left">
-              <div className="text-info">合约部署共需要三个步骤，请逐次完成:</div>
-          </div>
-          <button id="deleteData" className="btn btn-secondary w-100" onClick={deleteData}>0. 清理服务器不活跃NFT数据</button>
-          <div>第一步：将所有图片放在一个文件夹内，并将次文件夹上传</div>
-          <div className="input-group mb-3 mt-2">
-              <div className="input-group-prepend">
-                  
+    <div className="row d-flex">
+      <div className="col-6 p-4 border border-1">
+        <h5>上传图片并且填写NFT信息</h5>
+            <form>
+              <div className="form-group d-flex">
+                <div className="input-group">
+                  <button htmlFor="exampleFormControlFile1" className="btn w-40">上传图片</button>
+                  <input type="file" directory="" webkitdirectory="" className="w-60 form-control" onChange={changeHandler}/>
+                </div>
               </div>
-              <input type="file" directory="" webkitdirectory="" className="form-control" onChange={changeHandler}/>
+              <div className="form-group d-flex">
+                <div className="input-group">
+                <button htmlFor="exampleFormControlFile1" className="btn mr-3 w-40">NFT名字(英文)</button>
+                <input type="text" className="w-60 form-control" required = {true} placeholder="CryptoPunk" aria-label="Username" aria-describedby="basic-addon1"
+                    onChange={(e)=>{
+                      setName(e.target.value)
+                    }}
+                    />
+                </div>
+              </div>
+              <div className="form-group d-flex">
+                <div className="input-group">
+                <button htmlFor="exampleFormControlFile1" className="btn w-40">NFT标识符号(英文字母)</button>
+                <input type="text" className="w-60 form-control" required = {true} placeholder="PK" aria-label="Username" aria-describedby="basic-addon1"
+                    onChange={(e)=>{
+                      symble.current=e.target.value
+                    }}
+                    />
+                </div>
+              </div>
+              <div className="form-group d-flex">
+                <div className="input-group">
+                  <button htmlFor="exampleFormControlFile1" className="btn w-40">价格/NFT</button>
+                  <input type="text" className="w-60 form-control" required = {true} placeholder="0.001" aria-label="Username" aria-describedby="basic-addon1"
+                        onChange={(e)=>{
+                          setPrice(e.target.value)
+                        }}
+                        />
+                </div>
+              </div>
               
+
+        
+              <div className="form-group d-flex">
+                <div className="input-group">
+                  <button htmlFor="exampleFormControlFile1" className="btn  w-40">NFT描述</button>
+                  <input type="text" className="w-60 form-control" placeholder="CryptoPunk是一种数字生成艺术NFT" aria-label="Username" aria-describedby="basic-addon1"
+                  onChange={(e)=>{
+                    setDescription(e.target.value)
+                  }}
+                  />
+                </div> 
+             </div>
+          </form>
+          <div className="dropdown mt-2 w-100">
+                    <button className="btn btn-outline-secondary w-100 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      选择要部署的网络
+                    </button>
+                    <ul className="dropdown-menu">
+                      <li><button className="dropdown-item" type="button" onClick={()=>{setChain(80001)}}>Polygon 测试网</button></li>
+                      <li><button className="dropdown-item" type="button" onClick={()=>{
+                        setChain(1337)
+                        }}>本地测试网</button></li>
+                      <li><button className="dropdown-item" type="button" onClick={()=>{
+                        setChain(137)
+                        }}>Polygon主网</button></li>
+                      <li><button className="dropdown-item" type="button" onClick={()=>{
+                        setChain(1)
+                        }}>以太主网</button></li>
+                      
+                    </ul>
+              </div>
+          <a href="#" id= "uploadPic" className="mt-2 btn btn-primary w-100" onClick={handleSubmission}>提交部署</a>
+      </div>
+      <div className="col-6">
+        <div className="card w-100">
+            <div className="card-body">
+              <h5 className="card-title">NFT信息和进度</h5>
+                <ul className="list-group">
+                  <li className="list-group-item">名称：{name} </li>
+                  <li className="list-group-item">符号：{symble.current} </li>
+                  <li className="list-group-item"> 图片数量:{numberOfPic} </li>
+                  <li className="list-group-item ">
+                  {chain==1337?
+                  ('本地测试网'):(chain==80001?
+                    ("Polygon测试网"):(chain==5?("以太测试网"):(chain==1?
+                      ("以太主网"):(chain==137?("Polygon主网"):(chain==42161?
+                        ("Arbitrum"):(chain==10?("Optimsim"):(chain==56?
+                          ("BSC"):("未选择"))))))))}
+                </li>
+                  <li className="list-group-item">价格:{price}</li>
+                </ul>
+              <p className="card-text">  </p>
+              
+            </div>
+            {renderButton()}
           </div>
-
-          <div className="input-group mb-3">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="basic-addon1" >NFT名字</span>
-              </div>
-              <input type="text" className="form-control" required = {true} placeholder="CryptoPunk" aria-label="Username" aria-describedby="basic-addon1"
-              onChange={(e)=>{
-                setName(e.target.value)
-              }}
-              />
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="basic-addon1" >NFT符号</span>
-              </div>
-              <input type="text" className="form-control" required = {true} placeholder="PK" aria-label="Username" aria-describedby="basic-addon1"
-              onChange={(e)=>{
-                symble.current=e.target.value
-              }}
-              />
-        </div>
-
-
-        <div className="input-group mb-3">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="basic-addon1">NFT描述</span>
-              </div>
-              <input type="text" className="form-control" placeholder="CryptoPunk是一种数字生成艺术NFT" aria-label="Username" aria-describedby="basic-addon1"
-              onChange={(e)=>{
-                setDescription(e.target.value)
-              }}
-              />
-        </div>
-        <button id="uploadPic" className="btn btn-danger w-100" onClick={handleSubmission}>第二步：上传图片至IPFS</button>
-        <button id="uploadMeta" className="btn btn-white w-100 mt-3 text-white" onClick={upLoadMeta}>第三步： 制作并上传MetaData</button> 
-        <button id="deployContract" className="btn btn-white w-100 mt-3 text-white" onClick={()=>{deploytContract(name,symble,`ipfs://${MetaDataCID}`,numberOfPic,prop.chain)}}>第四步：部署合约 🚀</button> 
         </div>
 
       <div className="m-5"></div>
