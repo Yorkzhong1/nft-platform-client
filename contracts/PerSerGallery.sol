@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract AlphaPunk is ERC721Enumerable, Ownable {
+contract PerSeGallery is ERC721Enumerable, Ownable {
     using Strings for uint256;
     /**
         * @dev _baseTokenURI for computing {tokenURI}. If set, the resulting URI for each
@@ -14,7 +14,7 @@ contract AlphaPunk is ERC721Enumerable, Ownable {
     string _baseTokenURI;
 
     //  _price is the price of one LW3Punks NFT
-    uint256 public _price = 0.001 ether;
+    uint256 public _price;
 
     // _paused is used to pause the contract in case of an emergency
     bool public _paused;
@@ -35,9 +35,10 @@ contract AlphaPunk is ERC721Enumerable, Ownable {
         * name in our case is `LW3Punks` and symbol is `LW3P`.
         * Constructor for LW3P takes in the baseURI to set _baseTokenURI for the collection.
         */
-    constructor (string memory baseURI,uint _maxTokenIds,string memory name, string memory symbol) ERC721(name, symbol) {
+    constructor (string memory name, string memory symbol,string memory baseURI,uint _maxTokenIds, uint price) ERC721(name, symbol) {
         _baseTokenURI = baseURI;
         maxTokenIds = _maxTokenIds;
+         _price = price;
     }
 
     /**
@@ -55,6 +56,10 @@ contract AlphaPunk is ERC721Enumerable, Ownable {
     * returned an empty string for the baseURI
     */
     function _baseURI() internal view virtual override returns (string memory) {
+        return _baseTokenURI;
+    }
+
+    function URI() public view returns(string memory){
         return _baseTokenURI;
     }
 
