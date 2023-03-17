@@ -82,3 +82,15 @@
   cursor: pointer;
   margin-bottom: 2%;
 }
+
+.background {
+  background-color:"#FFFFFF";
+  margin:0
+}
+
+.table {
+  width:1152;
+  height:4253;
+  border:0;
+  padding: 0px;
+}
