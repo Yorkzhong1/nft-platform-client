@@ -5,7 +5,7 @@ import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import styles from "../styles/Home.module.css";
 
-import { HomeFillIcon } from "@primer/octicons-react";
+
 // import {createNFT,getNFT,deactiveNFT,removeNFT } from "./client.js"
 
 // import { getProviderOrSigner } from "./utils";
