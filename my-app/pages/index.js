@@ -19,11 +19,11 @@ export default function Home(){
                 <tr>
                     
                     <td>
-                        <a className="navbar-brand text-primary fst-italic" href="/NFT">
+                        <Link className="navbar-brand text-primary fst-italic" href="/NFT">
                             <img src="images/&#x7f51;&#x9875;_01.jpg" width="352" height="124" alt=""/>
-                        </a>
+                        </Link>
                     </td>
-                    <td colspan="2">
+                    <td>
                         <img src="images/&#x7f51;&#x9875;_02.jpg" width="585" height="124" alt=""/></td>
                     <td>
                         <img src="images/&#x7f51;&#x9875;_03.jpg" width="215" height="124" alt=""/></td>
