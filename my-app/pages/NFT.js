@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image'
 import { Contract, providers, utils,ethers } from "ethers";
 import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
