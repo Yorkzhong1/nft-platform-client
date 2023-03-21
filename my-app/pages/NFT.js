@@ -96,7 +96,7 @@ export default function NFT() {
       </Head>
       <div className="container">
            <div className="row mt-5">
-              <div id="maindisplay" className="col-10 bg-light m-1">
+              <div id="maindisplay" className="col-12 bg-light m-1">
                   <div className="text-center">
                     <div className="card text-bg-dark">
                       <Image src="/images/17.png" layout='responsive' width="144" height="45" alt=""/>
