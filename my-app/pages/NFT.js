@@ -92,26 +92,18 @@ export default function NFT() {
         <title>Per Se Gallery</title>
         <meta name="description" content="LW3Punks-Dapp" />
         
-        
       </Head>
       <div className="container">
-           <div className="row mt-5">
-              <div id="maindisplay" className="col-12 bg-light m-1">
-                  <div className="text-center">
-                    <div className="card text-bg-dark">
-                      <Image src="/images/17.png" layout='responsive' width="144" height="45" alt=""/>
-                      <div className="card-img-overlay ">
-                        <div className="row mb-2">
-                          <div className="col-2">
-                          <Link className="navbar-brand text-primary fst-italic" href="/">
+      <div className="row">
+           <div className="col-2">
+                 <Link className="navbar-brand text-primary fst-italic" href="/">
                             <img src="/images/01.jpg" className="card-img" alt="..."/>
-                          </Link>
-                          </div>
-                         
-                          <div className="col-5 ">
-                            <div className="d-flex">
-                            <div className="dropdown me-5">
-                                <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                 </Link>
+           </div>
+           <div className="col"></div>
+           <div className="col-1 mt-4 ">
+               <div className="dropdown me-5">
+                     <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                   连接网络
                                 </button>
                                 <ul className="dropdown-menu">
@@ -131,7 +123,9 @@ export default function NFT() {
                                     connectWallet(1)}}>以太主网</button></li>
                                   
                                 </ul>
-                            </div>
+                  </div>
+            </div>
+            <div className="col-2 mt-4 ">
                             <button className="btn btn-light ">
                               {chain==1337?
                               ('本地测试网'):(chain==80001?
@@ -140,10 +134,18 @@ export default function NFT() {
                                     ("Arbitrum"):(chain==10?("Optimsim"):(chain==56?
                                       ("BSC"):("未选择"))))))))}
                             </button>
-                          </div>
-                          </div>
+                
+                    
+            </div>
                           
-                        </div>
+        </div>
+           <div className="row">
+              <div id="maindisplay" className="col-12 bg-light m-1">
+                  <div className="text-center">
+                    <div className="card text-bg-dark">
+                      <Image src="/images/17.png" layout='responsive' width="144" height="45" alt=""/>
+                      <div className="card-img-overlay ">
+                       
                         <div className='row'>
                           <div className='col-12 mt-3'>
                             <h5 className="card-title text-start">Welcome to Per Se Gallery</h5>
@@ -162,7 +164,6 @@ export default function NFT() {
                       {renderButton()}
                       <Image src="/images/14.jpg" layout='responsive' width="1152" height="357" alt=""/>
                   </div>
-         
          
               </div>
               
