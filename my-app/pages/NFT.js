@@ -96,14 +96,14 @@ export default function NFT() {
       <div className="container">
       <div className="row">
            <div className="col-2">
-                 <Link className="navbar-brand text-primary fst-italic" href="/">
-                            <img src="/images/01.jpg" className="card-img" alt="..."/>
+                 <Link className="navbar-brand text-primary" href="/">
+                            <img src="/images/01.jpg" alt="..."/>
                  </Link>
            </div>
            <div className="col"></div>
-           <div className="col-1 mt-4 ">
+           <div className="col-1 mt-5 ">
                <div className="dropdown me-5">
-                     <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     <button className="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                   连接网络
                                 </button>
                                 <ul className="dropdown-menu">
@@ -125,8 +125,8 @@ export default function NFT() {
                                 </ul>
                   </div>
             </div>
-            <div className="col-2 mt-4 ">
-                            <button className="btn btn-light ">
+            <div className="col-2 mt-5 ">
+                            <button className="btn btn-light btn-sm">
                               {chain==1337?
                               ('本地测试网'):(chain==80001?
                                 ("Polygon测试网"):(chain==5?("以太测试网"):(chain==1?
