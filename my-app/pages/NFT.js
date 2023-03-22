@@ -95,16 +95,16 @@ export default function NFT() {
       </Head>
       <div className="container">
         <div className="row">
-            <div className="col-2">
-                  <Link className="navbar-brand text-primary" href="/">
-                       <img src="/images/01.jpg" alt="..."/>
-                  </Link>
-            </div> 
+            <div className="col">
+                        <Link className="navbar-brand text-primary fst-italic" href="/">
+                                    <Image src="/images/01.jpg" layout='responsive'  width="352" height="124" alt=""/>
+                        </Link>
+                </div>
             <div className="col"></div>
-            <div className="col-3">
+            <div className="col-5">
               <div className="mt-4"></div>
-              <button type="button" className="btn btn-dark mt-5 me-5" onClick={()=>{setButtonFunction(1)}}>Deploy Contract </button>
-              <button type="button" className="btn btn-dark mt-5 " onClick={()=>{setButtonFunction(2)}}>Mint NFT</button>  
+              <button type="button" className="btn btn-dark bt-sm mt-2 me-5" onClick={()=>{setButtonFunction(1)}}>Deploy Contract </button>
+              <button type="button" className="btn btn-dark btn-sm mt-2 " onClick={()=>{setButtonFunction(2)}}>Mint NFT</button>  
             </div> 
           </div>
         
@@ -466,7 +466,7 @@ const FolderUpload = (prop) => {
   return (
     <div className="row d-flex">
       <div className="col-12 p-2">
-        <h5>Select the folder contains your arts, and fill in information before submit</h5>
+        <p className="text-start">Select the folder contains your arts pictures and upload</p>
           <div className="text-start">
               <input type="file" directory="" webkitdirectory="" className="w-60 form-control rounded-pill" onChange={changeHandler}/>
               <button htmlFor="exampleFormControlFile1" className="btn mr-3 w-40">NFT Name</button>
