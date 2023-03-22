@@ -112,14 +112,6 @@ export default function NFT() {
                     <div className="card text-bg-dark">
                       <Image src="/images/18.png" layout='responsive' width="144" height="45" alt=""/>
                       <div className="card-img-overlay ">
-                       
-                        <div className='row mt-5'>
-                          <div className='col-12 mt-3'>
-                            <h5 className="card-title text-start">Welcome to Per Se Gallery</h5>
-                            <p className="card-text text-start">Per Se Gallery is a platform on which artists publish editions of unique generative artworks using creative code. Chosen through a highly-selective application process, these projects represent new directions in this emergent art form.</p>
-                          </div>
-                        </div >
-                        
                         
                       </div>
                       <div className="position-absolute bottom-0 start-30">
