@@ -123,8 +123,8 @@ export default function NFT() {
                         
                       </div>
                       <div className="position-absolute bottom-0 start-30">
-                            <button type="button" className="btn btn-dark btn m-5" onClick={()=>{setButtonFunction(1)}}>Deploy Contract </button>
-                            <button type="button" className="btn btn-dark btn m-5" onClick={()=>{setButtonFunction(2)}}>Mint NFT</button>
+                            <button type="button" className="btn btn-dark btn-sm m-5" onClick={()=>{setButtonFunction(1)}}>Deploy Contract </button>
+                            <button type="button" className="btn btn-dark btn-sm m-5" onClick={()=>{setButtonFunction(2)}}>Mint NFT</button>
                         </div>
                   </div>
                   
