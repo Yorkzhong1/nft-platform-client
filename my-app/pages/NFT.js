@@ -151,34 +151,34 @@ const getChainName = (chain)=>{
   let chainName
   switch (chain) {
     case 1337:
-      chainName="本地测试网"
+      chainName="Local testnet"
       break;
 
     case 80001:
-        chainName="Polygon测试网"
+        chainName="Polygon testnet"
         break;
     case 5:
-          chainName="以太测试网"
+          chainName="ethereum testnet"
           break;
     case 1:
-          chainName="以太主网"
+          chainName="ethereum"
           break;
     case 137:
-          chainName="Polygon主网"
+          chainName="Polygon"
           break;
     case 42161:
-          chainName="Arbitrum主网"
+          chainName="Arbitrum"
           break;
     case 10:
-          chainName="Optimsim主网"
+          chainName="Optimsim"
           break;
     case 56:
-          chainName="BSC主网"
+          chainName="BSC"
           break;
        
 
     default:
-      chainName="本地测试网"
+      chainName="local testnet"
       break;
   }
   return chainName
@@ -218,7 +218,7 @@ const Mint = (prop) => {
   const [contractIndex,setContractIndex] = useState(0);
   const [tokenIdMinted,setTokenIdsMinted]=useState(0);
   const [maxTokenId,setMaxTokenId]=useState(0);
-  const [chainName,setChainName]=useState("以太主网");
+  const [chainName,setChainName]=useState("Polygon Testnet");
   const [chain,setChain]=useState(80001);
   const button = useRef("0")
   
