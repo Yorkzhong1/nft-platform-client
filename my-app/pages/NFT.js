@@ -94,18 +94,20 @@ export default function NFT() {
         
       </Head>
       <div className="container">
-        <div className="row">
-            <div className="col">
-                        <Link className="navbar-brand text-primary fst-italic" href="/">
-                                    <Image src="/images/01.jpg" layout='responsive'  width="352" height="124" alt=""/>
-                        </Link>
+     
+          <div className="row">
+              <nav className="navbar navbar-expand-lg bg-body-tertiary">
+                <div className="container-fluid">
+                  <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                  </button>
+                  <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
+                        <Link className="navbar-brand text-primary fst-italic mt-4" href="/"><button type="button" className="btn btn-dark btn-sm mt-5 me-5">HOME</button></Link>
+                        <button type="button" className="btn btn-dark btn-sm mt-5 me-5" onClick={()=>{setButtonFunction(1)}}>Deploy Contract </button>
+                        <button type="button" className="btn btn-dark btn-sm mt-5 " onClick={()=>{setButtonFunction(2)}}>Mint NFT</button>  
+                  </div>
                 </div>
-            <div className="col"></div>
-            <div className="col-5">
-              <div className="mt-4"></div>
-              <button type="button" className="btn btn-dark bt-sm mt-2 me-5" onClick={()=>{setButtonFunction(1)}}>Deploy Contract </button>
-              <button type="button" className="btn btn-dark btn-sm mt-2 " onClick={()=>{setButtonFunction(2)}}>Mint NFT</button>  
-            </div> 
+              </nav>
           </div>
         
            <div className="row">
