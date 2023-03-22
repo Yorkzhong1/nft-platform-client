@@ -110,10 +110,10 @@ export default function NFT() {
               
                   <div className="text-center">
                     <div className="card text-bg-dark">
-                      <Image src="/images/17.png" layout='responsive' width="144" height="45" alt=""/>
+                      <Image src="/images/18.png" layout='responsive' width="144" height="45" alt=""/>
                       <div className="card-img-overlay ">
                        
-                        <div className='row'>
+                        <div className='row mt-5'>
                           <div className='col-12 mt-3'>
                             <h5 className="card-title text-start">Welcome to Per Se Gallery</h5>
                             <p className="card-text text-start">Per Se Gallery is a platform on which artists publish editions of unique generative artworks using creative code. Chosen through a highly-selective application process, these projects represent new directions in this emergent art form.</p>
@@ -200,8 +200,8 @@ const getProviderOrSigner = async (needSigner = false,chain) => {
   // If user is not connected to the Mumbai network, let them know and throw an error
   const { chainId } = await web3Provider.getNetwork();
   if (chainId !== chain) {
-    window.alert(`请将钱包网络改变${chainName}后再重新尝试`)
-    throw new Error(`请将钱包网络改变${chainName}`);
+    window.alert(`Please change your metamask to ${chainName} and retry`)
+    throw new Error(`please change your metamask to ${chainName}`);
   }
 
   if (needSigner) {
