@@ -103,8 +103,8 @@ export default function NFT() {
                   </button>
                   <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
                         <Link className="navbar-brand text-primary fst-italic mt-4" href="/"><button type="button" className="btn btn-dark btn-sm mt-5 me-5">HOME</button></Link>
-                        <button type="button" className="btn btn-dark btn-sm mt-5 me-5" onClick={()=>{setButtonFunction(1)}}>Deploy Contract </button>
-                        <button type="button" className="btn btn-dark btn-sm mt-5 " onClick={()=>{setButtonFunction(2)}}>Mint NFT</button>  
+                        <button type="button" className="btn btn-dark btn-sm mt-5 me-5" onClick={()=>{setButtonFunction(1)}}>DEPLOY</button>
+                        <button type="button" className="btn btn-dark btn-sm mt-5 " onClick={()=>{setButtonFunction(2)}}>MINT</button>  
                   </div>
                 </div>
               </nav>
