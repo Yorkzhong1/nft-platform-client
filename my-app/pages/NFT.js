@@ -513,9 +513,10 @@ const FolderUpload = (prop) => {
                     setDescription(e.target.value)
                   }}
                   />
-            <button htmlFor="exampleFormControlFile1" className="btn w-40">Which network to deploy</button>
-            <div className="dropdown mt-2 w-100">
-                    <button className="btn btn-outline-secondary w-100 dropdown-toggle rounded-pill" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            
+            <div className="dropdown mt-2">
+                    <button htmlFor="exampleFormControlFile1" className="btn w-40">Which network to deploy</button>
+                    <button className="btn btn-outline-secondary w-60 dropdown-toggle rounded-pill" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {chain==1337?
                               ('Local testnet'):(chain==80001?
                                 ("Polygon Testnet"):(chain==5?("Ethereum testnet"):(chain==1?
@@ -524,14 +525,14 @@ const FolderUpload = (prop) => {
                                       ("BSC"):("Did not selected"))))))))}
                     </button>
                     <ul className="dropdown-menu">
-                      <li><button className="dropdown-item w-100" type="button" onClick={()=>{setChain(80001)}}>Polygon Testnet</button></li>
-                      <li><button className="dropdown-item w-100" type="button" onClick={()=>{
+                      <li><button className="dropdown-item " type="button" onClick={()=>{setChain(80001)}}>Polygon Testnet</button></li>
+                      <li><button className="dropdown-item" type="button" onClick={()=>{
                         setChain(1337)
                         }}>local Testnet</button></li>
-                      <li><button className="dropdown-item w-100" type="button" onClick={()=>{
+                      <li><button className="dropdown-item" type="button" onClick={()=>{
                         setChain(137)
                         }}>Polygon</button></li>
-                      <li><button className="dropdown-item  w-100" type="button" onClick={()=>{
+                      <li><button className="dropdown-item " type="button" onClick={()=>{
                         setChain(1)
                         }}>Ethereum</button></li>
                     </ul>
