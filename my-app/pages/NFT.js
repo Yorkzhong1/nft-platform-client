@@ -101,10 +101,15 @@ export default function NFT() {
                  </Link>
            </div>
            <div className="col"></div>
-           <div className="col-1 mt-5 ">
+           <div className="col-2 mt-5 ">
                <div className="dropdown me-5">
-                     <button className="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                  连接网络
+                     <button className="btn btn-secondary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     {chain==1337?
+                              ('本地测试网'):(chain==80001?
+                                ("Polygon测试网"):(chain==5?("以太测试网"):(chain==1?
+                                  ("以太主网"):(chain==137?("Polygon主网"):(chain==42161?
+                                    ("Arbitrum"):(chain==10?("Optimsim"):(chain==56?
+                                      ("BSC"):("未选择"))))))))}
                                 </button>
                                 <ul className="dropdown-menu">
                                   
@@ -125,22 +130,12 @@ export default function NFT() {
                                 </ul>
                   </div>
             </div>
-            <div className="col-2 mt-5 ">
-                            <button className="btn btn-light btn-sm">
-                              {chain==1337?
-                              ('本地测试网'):(chain==80001?
-                                ("Polygon测试网"):(chain==5?("以太测试网"):(chain==1?
-                                  ("以太主网"):(chain==137?("Polygon主网"):(chain==42161?
-                                    ("Arbitrum"):(chain==10?("Optimsim"):(chain==56?
-                                      ("BSC"):("未选择"))))))))}
-                            </button>
-                
-                    
-            </div>
+            
                           
         </div>
+        
            <div className="row">
-              <div id="maindisplay" className="col-12 bg-light m-1">
+              
                   <div className="text-center">
                     <div className="card text-bg-dark">
                       <Image src="/images/17.png" layout='responsive' width="144" height="45" alt=""/>
@@ -152,20 +147,23 @@ export default function NFT() {
                             <p className="card-text text-start">Per Se Gallery is a platform on which artists publish editions of unique generative artworks using creative code. Chosen through a highly-selective application process, these projects represent new directions in this emergent art form.</p>
                           </div>
                         </div >
-                        <div className="position-absolute bottom-0 start-30">
+                        
+                        
+                      </div>
+                      <div className="position-absolute bottom-0 start-30">
                             <button type="button" className="btn btn-dark btn m-5" onClick={()=>{setButtonFunction(1)}}>部署合约 </button>
                             <button type="button" className="btn btn-dark btn m-5" onClick={()=>{setButtonFunction(2)}}>Mint NFT</button>
                             <button type="button" className="btn btn-dark btn m-5" onClick={()=>{setButtonFunction(3)}}>NFT市场</button>
                             <button type="button" className="btn btn-dark btn m-5" onClick={()=>{setButtonFunction(4)}}>使用说明</button>
                         </div>
-                        
-                      </div>
                   </div>
+                  
+                  
                       {renderButton()}
                       <Image src="/images/14.jpg" layout='responsive' width="1152" height="357" alt=""/>
                   </div>
          
-              </div>
+              
               
               
           </div>
@@ -351,7 +349,7 @@ const Mint = (prop) => {
           <div className="m-5 p-3">
             <button type="button" className="btn btn-light mt-5 text-danger" onClick={getContract}>点击这里刷新NFT列表</button>
             <div id="contract"> </div>
-            <div className="m-5 text-start"><p>项目: {(contractData[contractIndex])?(contractData[contractIndex].name):("")}<br></br>公链: {chainName}<br></br> Mint情况: {tokenIdMinted}/{maxTokenId}个NFT已经被Mint</p></div>
+            <div className="m-5 text-center"><p>项目: {(contractData[contractIndex])?(contractData[contractIndex].name):("")}<br></br>公链: {chainName}<br></br> Mint情况: {tokenIdMinted}/{maxTokenId}个NFT已经被Mint</p></div>
             <button className="btn btn-lg btn-dark w-50 rounded-pill" onClick={publicMint}>Mint NFT🚀</button>
           </div>
       </div>
@@ -545,10 +543,15 @@ const FolderUpload = (prop) => {
                     setDescription(e.target.value)
                   }}
                   />
-            
+            <button htmlFor="exampleFormControlFile1" className="btn w-40">部署网络</button>
             <div className="dropdown mt-2 w-100">
                     <button className="btn btn-outline-secondary w-100 dropdown-toggle rounded-pill" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      选择要部署的网络
+                    {chain==1337?
+                              ('本地测试网'):(chain==80001?
+                                ("Polygon测试网"):(chain==5?("以太测试网"):(chain==1?
+                                  ("以太主网"):(chain==137?("Polygon主网"):(chain==42161?
+                                    ("Arbitrum"):(chain==10?("Optimsim"):(chain==56?
+                                      ("BSC"):("未选择"))))))))}
                     </button>
                     <ul className="dropdown-menu">
                       <li><button className="dropdown-item w-100" type="button" onClick={()=>{setChain(80001)}}>Polygon 测试网</button></li>
