@@ -101,35 +101,7 @@ export default function NFT() {
                  </Link>
            </div>
            <div className="col"></div>
-           <div className="col-2 mt-5 ">
-               <div className="dropdown me-5">
-                     <button className="btn btn-secondary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                     {chain==1337?
-                              ('本地测试网'):(chain==80001?
-                                ("Polygon测试网"):(chain==5?("以太测试网"):(chain==1?
-                                  ("以太主网"):(chain==137?("Polygon主网"):(chain==42161?
-                                    ("Arbitrum"):(chain==10?("Optimsim"):(chain==56?
-                                      ("BSC"):("未选择"))))))))}
-                                </button>
-                                <ul className="dropdown-menu">
-                                  
-                                  <li><button className="dropdown-item" type="button" onClick={()=>{
-                                    setChain(80001)
-                                    connectWallet(80001)}}>Polygon测试网</button></li>
-                                  <li><button className="dropdown-item" type="button" onClick={()=>{
-                                    setChain(1337)
-                                    connectWallet(1337)
-                                    }}>本地测试网</button></li>
-                                  <li><button className="dropdown-item" type="button" onClick={()=>{
-                                    setChain(137)
-                                    connectWallet(137)}}>Polygon主网</button></li>
-                                  <li><button className="dropdown-item" type="button" onClick={()=>{
-                                    setChain(1)
-                                    connectWallet(1)}}>以太主网</button></li>
-                                  
-                                </ul>
-                  </div>
-            </div>
+           
             
                           
         </div>
@@ -151,10 +123,8 @@ export default function NFT() {
                         
                       </div>
                       <div className="position-absolute bottom-0 start-30">
-                            <button type="button" className="btn btn-dark btn m-5" onClick={()=>{setButtonFunction(1)}}>部署合约 </button>
+                            <button type="button" className="btn btn-dark btn m-5" onClick={()=>{setButtonFunction(1)}}>Deploy Contract </button>
                             <button type="button" className="btn btn-dark btn m-5" onClick={()=>{setButtonFunction(2)}}>Mint NFT</button>
-                            <button type="button" className="btn btn-dark btn m-5" onClick={()=>{setButtonFunction(3)}}>NFT市场</button>
-                            <button type="button" className="btn btn-dark btn m-5" onClick={()=>{setButtonFunction(4)}}>使用说明</button>
                         </div>
                   </div>
                   
@@ -347,9 +317,9 @@ const Mint = (prop) => {
   return (
       <div >
           <div className="m-5 p-3">
-            <button type="button" className="btn btn-light mt-5 text-danger" onClick={getContract}>点击这里刷新NFT列表</button>
+            <button type="button" className="btn btn-light mt-5 text-danger" onClick={getContract}>Refresh list of existing NFT projects</button>
             <div id="contract"> </div>
-            <div className="m-5 text-center"><p>项目: {(contractData[contractIndex])?(contractData[contractIndex].name):("")}<br></br>公链: {chainName}<br></br> Mint情况: {tokenIdMinted}/{maxTokenId}个NFT已经被Mint</p></div>
+            <div className="m-5 text-center"><p>Project: {(contractData[contractIndex])?(contractData[contractIndex].name):("")}<br></br>Chain: {chainName}<br></br> {tokenIdMinted}/{maxTokenId} NFT Minted </p></div>
             <button className="btn btn-lg btn-dark w-50 rounded-pill" onClick={publicMint}>Mint NFT🚀</button>
           </div>
       </div>
@@ -495,81 +465,81 @@ const FolderUpload = (prop) => {
   }
   const renderButton=()=>{
     if(status=="normal"){
-      return(<div className="alert alert-dark text-danger text-center" role="alert">当前状态：部署尚未开始</div>)
+      return(<div className="alert alert-dark text-danger text-center" role="alert">Not started deploying yet...</div>)
     }else if(status=="pic"){
       return(
-        <div className="alert alert-dark text-danger" role="alert">正在上传图片...</div>
+        <div className="alert alert-dark text-danger" role="alert">Uploading pictures...</div>
       )
     }else if(status=="metadata"){
-      return(<div className="alert alert-dark text-danger" role="alert">正在上传Meta...</div>)
+      return(<div className="alert alert-dark text-danger" role="alert">Uploading Meta...</div>)
     }else if(status=="contract"){
-      return(<div className="alert alert-dark text-danger" role="alert">正在部署合约...</div>)
+      return(<div className="alert alert-dark text-danger" role="alert">Deploying contract...</div>)
     }else if(status=="uploadServer"){
-      return(<div className="alert alert-dark text-danger" role="alert">正在上传合约信息至服务器...</div>)
+      return(<div className="alert alert-dark text-danger" role="alert">Uploading contract information to server...</div>)
     }else if(status=="done"){
-      return(<div className="alert alert-dark text-danger" role="alert">NFT部署完成</div>)
+      return(<div className="alert alert-dark text-danger" role="alert">NFT deployed</div>)
     }   
   }
 
   return (
     <div className="row d-flex">
       <div className="col-12 p-2">
-        <h5>上传图片并且填写NFT信息</h5>
+        <h5>Select the folder contains your arts, and fill in information before submit</h5>
           <div className="text-start">
               <input type="file" directory="" webkitdirectory="" className="w-60 form-control rounded-pill" onChange={changeHandler}/>
-              <button htmlFor="exampleFormControlFile1" className="btn mr-3 w-40">NFT名字(英文)</button>
+              <button htmlFor="exampleFormControlFile1" className="btn mr-3 w-40">NFT Name</button>
                 <input type="text" className="w-60 form-control rounded-pill" required = {true} placeholder="CryptoPunk" aria-label="Username" aria-describedby="basic-addon1"
                     onChange={(e)=>{
                       setName(e.target.value)
                     }}
                     />
-               <button htmlFor="exampleFormControlFile1" className="btn w-40">NFT标识符号(英文字母)</button>
+               <button htmlFor="exampleFormControlFile1" className="btn w-40">NFT Symble</button>
                 <input type="text" className="w-60 form-control rounded-pill" required = {true} placeholder="PK" aria-label="Username" aria-describedby="basic-addon1"
                     onChange={(e)=>{
                       symble.current=e.target.value
                     }}
                     />
 
-                <button htmlFor="exampleFormControlFile1" className="btn w-40">价格/NFT</button>
+                <button htmlFor="exampleFormControlFile1" className="btn w-40">Price/NFT</button>
                   <input type="text" className="w-60 form-control rounded-pill" required = {true} placeholder="0.001" aria-label="Username" aria-describedby="basic-addon1"
                         onChange={(e)=>{
                           setPrice(e.target.value)
                         }}
                         />
 
-              <button htmlFor="exampleFormControlFile1" className="btn  w-40">NFT描述</button>
-                  <input type="text" className="w-60 form-control rounded-pill" placeholder="CryptoPunk是一种数字生成艺术NFT" aria-label="Username" aria-describedby="basic-addon1"
+              <button htmlFor="exampleFormControlFile1" className="btn  w-40">NFT Description</button>
+                  <input type="text" className="w-60 form-control rounded-pill" placeholder="myPunk is a AI generated art NFT" aria-label="Username" aria-describedby="basic-addon1"
                   onChange={(e)=>{
                     setDescription(e.target.value)
                   }}
                   />
-            <button htmlFor="exampleFormControlFile1" className="btn w-40">部署网络</button>
+            <button htmlFor="exampleFormControlFile1" className="btn w-40">Which network to deploy</button>
             <div className="dropdown mt-2 w-100">
                     <button className="btn btn-outline-secondary w-100 dropdown-toggle rounded-pill" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {chain==1337?
-                              ('本地测试网'):(chain==80001?
-                                ("Polygon测试网"):(chain==5?("以太测试网"):(chain==1?
-                                  ("以太主网"):(chain==137?("Polygon主网"):(chain==42161?
+                              ('Local testnet'):(chain==80001?
+                                ("Polygon Testnet"):(chain==5?("Ethereum testnet"):(chain==1?
+                                  ("Ethereum"):(chain==137?("Polygon"):(chain==42161?
                                     ("Arbitrum"):(chain==10?("Optimsim"):(chain==56?
-                                      ("BSC"):("未选择"))))))))}
+                                      ("BSC"):("Did not selected"))))))))}
                     </button>
                     <ul className="dropdown-menu">
-                      <li><button className="dropdown-item w-100" type="button" onClick={()=>{setChain(80001)}}>Polygon 测试网</button></li>
+                      <li><button className="dropdown-item w-100" type="button" onClick={()=>{setChain(80001)}}>Polygon Testnet</button></li>
                       <li><button className="dropdown-item w-100" type="button" onClick={()=>{
                         setChain(1337)
-                        }}>本地测试网</button></li>
+                        }}>local Testnet</button></li>
                       <li><button className="dropdown-item w-100" type="button" onClick={()=>{
                         setChain(137)
-                        }}>Polygon主网</button></li>
+                        }}>Polygon</button></li>
                       <li><button className="dropdown-item  w-100" type="button" onClick={()=>{
                         setChain(1)
-                        }}>以太主网</button></li>
+                        }}>Ethereum</button></li>
                     </ul>
               </div>
 
 
 
-              <a href="#" id= "uploadPic" className="mt-2 btn btn-dark w-100 rounded-pill" onClick={handleSubmission}>提交部署</a>
+              <a href="#" id= "uploadPic" className="mt-2 btn btn-dark w-100 rounded-pill" onClick={handleSubmission}>Submit</a>
               {renderButton()}         
             </div>
             
