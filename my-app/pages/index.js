@@ -304,7 +304,7 @@ const Mint = (prop) => {
         console.log('token data refreshed')
         if(_tokenIds.toNumber()==_maxTokenIds.toNumber()){
           await axios.post(`${serverUrl}/deActive`,{contractAdd:add})//if all NFT are minted, then deactive it
-          window.alert(`NFT ${add} 已经mint结束，请刷新NFT列表`)
+          window.alert(`NFT ${add} Mint is finished，please refresh the NFT project list`)
         }
         
         
@@ -324,9 +324,9 @@ const Mint = (prop) => {
     
     
     const tx = await nftContract.mint({value: utils.parseEther("0.001"),});
-    window.alert(`开始Mint NFT，请稍待...`);
+    window.alert(`Start minting...`);
       await tx.wait();
-    window.alert(`你成功的mint了一个${contractData[contractIndex].name} NFT!`);
+    window.alert(`You minted a ${contractData[contractIndex].name} NFT!`);
     let res=await getTokenIdsMinted(add,chain)    
   } catch (err) {
     console.error(err);
@@ -505,16 +505,16 @@ const FolderUpload = (prop) => {
       return(<div className="alert alert-dark text-danger text-center" role="alert">Not started deploying yet...</div>)
     }else if(status=="pic"){
       return(
-        <div className="alert alert-dark text-danger" role="alert">Uploading pictures...</div>
+        <div className="alert alert-dark text-danger text-center" role="alert">Uploading pictures...</div>
       )
     }else if(status=="metadata"){
-      return(<div className="alert alert-dark text-danger" role="alert">Uploading Meta...</div>)
+      return(<div className="alert alert-dark text-danger text-center" role="alert">Uploading Meta...</div>)
     }else if(status=="contract"){
-      return(<div className="alert alert-dark text-danger" role="alert">Deploying contract...</div>)
+      return(<div className="alert alert-dark text-danger text-center" role="alert">Deploying contract...</div>)
     }else if(status=="uploadServer"){
-      return(<div className="alert alert-dark text-danger" role="alert">Uploading contract information to server...</div>)
+      return(<div className="alert alert-dark text-danger text-center" role="alert">Uploading contract information to server...</div>)
     }else if(status=="done"){
-      return(<div className="alert alert-dark text-danger" role="alert">NFT deployed</div>)
+      return(<div className="alert alert-dark text-danger text-center" role="alert">NFT deployed</div>)
     }   
   }
 
