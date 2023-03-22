@@ -94,36 +94,26 @@ export default function NFT() {
         
       </Head>
       <div className="container">
-      <div className="row">
-           <div className="col-2">
-                 <Link className="navbar-brand text-primary" href="/">
-                            <img src="/images/01.jpg" alt="..."/>
-                 </Link>
-           </div>
-           <div className="col"></div>
-           
-            
-                          
-        </div>
+        <div className="row">
+            <div className="col-2">
+                  <Link className="navbar-brand text-primary" href="/">
+                       <img src="/images/01.jpg" alt="..."/>
+                  </Link>
+            </div> 
+            <div className="col"></div>
+            <div className="col-3">
+              <div className="mt-4"></div>
+              <button type="button" className="btn btn-dark mt-5 me-5" onClick={()=>{setButtonFunction(1)}}>Deploy Contract </button>
+              <button type="button" className="btn btn-dark mt-5 " onClick={()=>{setButtonFunction(2)}}>Mint NFT</button>  
+            </div> 
+          </div>
         
            <div className="row">
-              
-                  <div className="text-center">
-                    <div className="card text-bg-dark">
+              <div className="col text-center">
                       <Image src="/images/18.png" layout='responsive' width="144" height="45" alt=""/>
-                      <div className="card-img-overlay ">
-                        
-                      </div>
-                      <div className="position-absolute bottom-0 start-30">
-                            <button type="button" className="btn btn-dark btn-sm m-5" onClick={()=>{setButtonFunction(1)}}>Deploy Contract </button>
-                            <button type="button" className="btn btn-dark btn-sm m-5" onClick={()=>{setButtonFunction(2)}}>Mint NFT</button>
-                        </div>
-                  </div>
-                  
-                  
                       {renderButton()}
                       <Image src="/images/14.jpg" layout='responsive' width="1152" height="357" alt=""/>
-                  </div>
+              </div>
          
               
               
