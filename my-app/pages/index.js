@@ -26,7 +26,7 @@ export default function NFT() {
   const [walletConnected, setWalletConnected] = useState(false);
   const [loading, setLoading] = useState(false);
   const web3ModalRef = useRef();
-  const [buttonFunction, setButtonFunction] = useState(1);
+  const [buttonFunction, setButtonFunction] = useState(0);
   const [chain, setChain] = useState(80001);
 
   useEffect(() => {
