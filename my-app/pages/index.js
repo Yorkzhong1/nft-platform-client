@@ -254,7 +254,7 @@ const Mint = (prop) => {
   const [tokenIdMinted,setTokenIdsMinted]=useState(0);
   const [maxTokenId,setMaxTokenId]=useState(0);
   const [chainName,setChainName]=useState("Polygon Testnet");
-  const [chain,setChain]=useState(80001);
+  const [chain,setChain]=useState(137);
   const button = useRef("0")
   
 
