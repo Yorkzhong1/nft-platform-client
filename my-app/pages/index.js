@@ -253,7 +253,7 @@ const Mint = (prop) => {
   const [contractIndex,setContractIndex] = useState(0);
   const [tokenIdMinted,setTokenIdsMinted]=useState(0);
   const [maxTokenId,setMaxTokenId]=useState(0);
-  const [chainName,setChainName]=useState("Polygon Testnet");
+  const [chainName,setChainName]=useState("Polygon");
   const [chain,setChain]=useState(137);
   const button = useRef("0")
   
