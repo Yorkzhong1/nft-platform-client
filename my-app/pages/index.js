@@ -27,7 +27,7 @@ export default function NFT() {
   const [loading, setLoading] = useState(false);
   const web3ModalRef = useRef();
   const [buttonFunction, setButtonFunction] = useState(0);
-  const [chain, setChain] = useState(80001);
+  const [chain, setChain] = useState(137);
 
   useEffect(() => {
     if (!walletConnected) {
@@ -368,7 +368,7 @@ const FolderUpload = (prop) => {
   console.log('folder upload')
   const selectedFiles=useRef()
   const [status,setStatus] = useState("normal");
-  const [chain,setChain] = useState(80001);
+  const [chain,setChain] = useState(137);
   
   
   //states on NFT
