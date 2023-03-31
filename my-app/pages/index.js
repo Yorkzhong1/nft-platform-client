@@ -560,16 +560,19 @@ const FolderUpload = (prop) => {
                                       ("BSC"):("Did not selected"))))))))}
                     </button>
                     <ul className="dropdown-menu">
-                      <li><button className="dropdown-item " type="button" onClick={()=>{setChain(80001)}}>Polygon Testnet</button></li>
+                      <li><button className="dropdown-item " type="button" onClick={()=>{setChain(137)}}>Polygon</button></li>
                       <li><button className="dropdown-item" type="button" onClick={()=>{
-                        setChain(1337)
-                        }}>local Testnet</button></li>
+                        setChain(42161)
+                        }}>Arbitrum</button></li>
                       <li><button className="dropdown-item" type="button" onClick={()=>{
-                        setChain(137)
-                        }}>Polygon</button></li>
+                        setChain(10)
+                        }}>Optimisim</button></li>
                       <li><button className="dropdown-item " type="button" onClick={()=>{
                         setChain(1)
                         }}>Ethereum</button></li>
+                      <li><button className="dropdown-item " type="button" onClick={()=>{
+                        setChain(80001)
+                        }}>Polygon Testnet</button></li>
                     </ul>
               </div>
 
